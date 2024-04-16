@@ -151,3 +151,171 @@ void removerLinhaFinal(LISTA *lista){
         }
     }
 }
+
+int cadeiaEstaVazia(CADEIA *cadeia){
+	if(cadeia->inicio == NULL || cadeia->fim == NULL)
+		return 1;
+	return 0;
+}
+
+void inserirCaractereCadeiaInicio(CADEIA *cadeia, char c){
+	CARACTERE *caractere = criarCaractere(c);
+	cadeia->tamanho++;
+
+	if(cadeiaEstaVazia(cadeia)){
+		cadeia->inicio = caractere;
+		cadeia->fim = caractere;
+		return;
+	}
+
+	caractere->prox = cadeia->inicio;
+	cadeia->inicio->ant = caractere;
+	cadeia->inicio = caractere;
+}
+
+void inserirCaractereCadeiaFim(CADEIA *cadeia, char c){
+	CARACTERE *caractere = criarCaractere(c);
+	cadeia->tamanho++;
+
+	if(cadeiaEstaVazia(cadeia)){
+		cadeia->inicio = caractere;
+		cadeia->fim = caractere;
+		return;
+	}
+
+	caractere->ant = cadeia->fim;
+	cadeia->fim->prox = caractere;
+	cadeia->fim = caractere;
+}
+
+void inserirCaractereCadeiaPosicao(CADEIA *cadeia, char c, int pos){
+	if(pos > cadeia->tamanho){
+		printf("Posição inválida\n");
+		return;
+	}
+
+	CARACTERE *caractere = criarCaractere(c);
+	cadeia->tamanho++;
+
+	if(cadeiaEstaVazia(cadeia)){
+		cadeia->inicio = caractere;
+		cadeia->fim = caractere;
+		return;
+	}
+
+	CARACTERE *aux = cadeia->inicio;
+	CARACTERE *ant = NULL;
+	int cont = 0;
+	while(aux != NULL && cont < pos){
+		cont++;
+		ant = aux;
+		aux = aux->prox;
+	}
+
+	if(ant == NULL){
+		caractere->prox = cadeia->inicio;
+		cadeia->inicio->ant = caractere;
+		cadeia->inicio = caractere;
+		return;
+	}
+
+	caractere->ant = ant;
+	ant->prox = caractere;
+	caractere->prox = aux;
+	aux->ant = caractere;
+}
+
+void removerCaractereCadeiaInicio(CADEIA *cadeia){
+	if(cadeiaEstaVazia(cadeia)){
+		printf("Cadeia vazia, impossível remover caractere\n");
+		return;
+	}
+
+	CARACTERE *aux = cadeia->inicio;
+	cadeia->inicio = aux->prox;
+	cadeia->inicio->ant = NULL;
+	free(aux);
+	cadeia->tamanho--;
+
+	if(cadeiaEstaVazia(cadeia)){
+		cadeia->fim = NULL;
+	}
+}
+
+void removerCaractereCadeiaFim(CADEIA *cadeia){
+	if(cadeiaEstaVazia(cadeia)){
+		printf("Cadeia vazia, impossível remover caractere\n");
+		return;
+	}
+
+	CARACTERE *aux = cadeia->fim;
+	cadeia->fim = aux->ant;
+	cadeia->fim->prox = NULL;
+	free(aux);
+	cadeia->tamanho--;
+
+	if(cadeiaEstaVazia(cadeia)){
+		cadeia->inicio = NULL;
+	}
+}
+void removerCaractereCadeiaPosicao(CADEIA *cadeia, int pos){
+	if(pos > cadeia->tamanho){
+		printf("Posição inválida\n");
+		return;
+	}
+
+	if(pos == 1){
+		removerCaractereCadeiaInicio(cadeia);
+		return;
+	}
+
+	if(pos == cadeia->tamanho){
+		removerCaractereCadeiaFim(cadeia);
+		return;
+	}
+
+	if(cadeiaEstaVazia(cadeia)){
+		printf("Cadeia vazia, impossível remover caractere\n");
+		return;
+	}
+
+	CARACTERE *aux = cadeia->inicio;
+	CARACTERE *ant = NULL;
+	cadeia->tamanho--;
+
+	int cont = 0;
+
+	while(aux != NULL && cont < pos-1){
+		cont++;
+		ant = aux;
+		aux = aux->prox;
+	}
+
+	ant->prox = aux->prox;
+	aux->prox->ant = ant;
+
+	free(aux);
+
+	if(cadeiaEstaVazia(cadeia)){
+		cadeia->fim = NULL;
+		cadeia->inicio = NULL;
+	}
+}
+
+void imprimirCadeia(CADEIA *cadeia){
+	CARACTERE *aux = cadeia->inicio;
+
+	while(aux != NULL){
+		printf("%c", aux->c);
+		aux = aux->prox;
+	}
+}
+
+void imprimirCadeiaInvertida(CADEIA *cadeia){
+	CARACTERE *aux = cadeia->fim;
+
+	while(aux != NULL){
+		printf("%c", aux->c);
+		aux = aux->ant;
+	}
+}
