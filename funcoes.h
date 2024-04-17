@@ -10,6 +10,7 @@ typedef struct caractere{
 typedef struct cadeia{
     CARACTERE *inicio;
     CARACTERE *fim;
+	int tamanho;
 }CADEIA;
 
 typedef struct linha{
@@ -26,5 +27,20 @@ typedef struct lista{
 
 void inicializarCadeia(CADEIA *c);
 void inicializarLista(LISTA *l);
+
+int cadeiaEstaVazia(CADEIA *cadeia);
+
+CARACTERE *criarCaractere(char c);
+
+void inserirCaractereCadeiaInicio(CADEIA *cadeia, char c);
+void inserirCaractereCadeiaFim(CADEIA *cadeia, char c);
+void inserirCaractereCadeiaPosicao(CADEIA *cadeia, char c, int pos);
+
+void removerCaractereCadeiaInicio(CADEIA *cadeia);
+void removerCaractereCadeiaFim(CADEIA *cadeia);
+void removerCaractereCadeiaPosicao(CADEIA *cadeia, int pos);
+
+void imprimirCadeia(CADEIA *cadeia);
+void imprimirCadeiaInversa(CADEIA *cadeia);
 #include "funcoes.c"
 #endif
