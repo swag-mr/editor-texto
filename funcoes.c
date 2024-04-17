@@ -20,9 +20,11 @@ CARACTERE* criarCaractere(char c){
 
 LINHA* criarLinha(){
     LINHA *linha = (LINHA*) malloc(sizeof(LINHA));
-    linha->cadeia = NULL;
+    linha->cadeia = (CADEIA*) malloc(sizeof(CADEIA));
     linha->ant = NULL;
     linha->prox = NULL;
+
+	inicializarCadeia(linha->cadeia);
     return linha;
 }
 
