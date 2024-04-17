@@ -336,3 +336,26 @@ void imprimirCadeiaInvertida(CADEIA *cadeia){
 		aux = aux->ant;
 	}
 }
+
+void lerArquivoLista(char *nome, LISTA *lista){
+	FILE *file = fopen(nome, "r");
+
+	inserirLinhaFim(lista);
+
+	LINHA *aux = lista->inicio;
+
+	char c;
+	while(!feof(file)){
+		c = fgetc(file);
+		if(c == EOF)
+			break;
+		if(c == '\n'){
+			inserirLinhaFim(lista);
+			aux = aux->prox;
+		}else{
+			inserirCaractereCadeiaFim(aux->cadeia, c);
+		}
+	}
+
+	removerLinhaFim(lista);
+}

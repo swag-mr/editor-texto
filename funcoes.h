@@ -29,11 +29,10 @@ void inicializarCadeia(CADEIA *c);
 void inicializarLista(LISTA *l);
 
 int cadeiaEstaVazia(CADEIA *cadeia);
+int listaEstaVazia(LISTA *l);
 
 CARACTERE *criarCaractere(char c);
 LINHA *criarLinha();
-
-int listaEstaVazia(LISTA *l);
 
 void inserirLinhaFim(LISTA *lista);
 void inserirLinhaInicio(LISTA *lista);
@@ -52,5 +51,7 @@ void removerCaractereCadeiaPosicao(CADEIA *cadeia, int pos);
 
 void imprimirCadeia(CADEIA *cadeia);
 void imprimirCadeiaInversa(CADEIA *cadeia);
+
+void lerArquivoLista(char *nome, LISTA *lista);
 #include "funcoes.c"
 #endif

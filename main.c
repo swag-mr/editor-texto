@@ -7,33 +7,7 @@ int main(){
 
 	inicializarLista(lista);
 
-	inserirLinhaInicio(lista);
-	inserirLinhaInicio(lista);
-	inserirLinhaInicio(lista);
-	/*
-	inserirLinhaFim(lista);
-	inserirLinhaFim(lista);
-	inserirLinhaPosicao(lista, 1);
-	inserirLinhaPosicao(lista, 2);*/
-
-	inserirCaractereCadeiaFim(lista->inicio->cadeia, 'J');
-	inserirCaractereCadeiaFim(lista->inicio->cadeia, 'o');
-	inserirCaractereCadeiaFim(lista->inicio->cadeia, 's');
-	inserirCaractereCadeiaFim(lista->inicio->cadeia, 'e');
-
-	inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 'V');
-	inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 'i');
-	inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 't');
-	inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 'o');
-	inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 'r');
-
-	inserirCaractereCadeiaFim(lista->fim->cadeia, 'K');
-	inserirCaractereCadeiaFim(lista->fim->cadeia, 'a');
-	inserirCaractereCadeiaFim(lista->fim->cadeia, 'u');
-	inserirCaractereCadeiaFim(lista->fim->cadeia, 'a');
-	inserirCaractereCadeiaFim(lista->fim->cadeia, 'n');
-
-	removerCaractereCadeiaFim(lista->fim->cadeia);
+	lerArquivoLista("./arquivos/texto.txt", lista);
 
 	LINHA *aux = lista->inicio;
 	while(aux != NULL){
