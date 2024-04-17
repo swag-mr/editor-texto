@@ -356,6 +356,22 @@ void lerArquivoLista(char *nome, LISTA *lista){
 			inserirCaractereCadeiaFim(aux->cadeia, c);
 		}
 	}
+	fclose(file);
 
 	removerLinhaFim(lista);
+}
+
+void gravarListaArquivo(char *nome, LISTA *lista){
+	FILE *file = fopen(nome, "w");
+	LINHA *auxLinha = lista->inicio;
+	while(auxLinha != NULL){
+		CARACTERE *auxCadeia = auxLinha->cadeia->inicio;
+		while(auxCadeia != NULL){
+			fputc(auxCadeia->c, file);
+			auxCadeia = auxCadeia->prox;
+		}
+		fputc('\n', file);
+		auxLinha = auxLinha->prox;
+	}
+	fclose(file);
 }

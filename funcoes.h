@@ -53,5 +53,6 @@ void imprimirCadeia(CADEIA *cadeia);
 void imprimirCadeiaInversa(CADEIA *cadeia);
 
 void lerArquivoLista(char *nome, LISTA *lista);
+void gravarListaArquivo(char *nome, LISTA *lista);
 #include "funcoes.c"
 #endif
