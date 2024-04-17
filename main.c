@@ -7,9 +7,14 @@ int main(){
 
 	inicializarLista(lista);
 
+	inserirLinhaInicio(lista);
+	inserirLinhaInicio(lista);
+	inserirLinhaInicio(lista);
+	/*
 	inserirLinhaFim(lista);
 	inserirLinhaFim(lista);
 	inserirLinhaPosicao(lista, 1);
+	inserirLinhaPosicao(lista, 2);*/
 
 	inserirCaractereCadeiaFim(lista->inicio->cadeia, 'J');
 	inserirCaractereCadeiaFim(lista->inicio->cadeia, 'o');
@@ -28,13 +33,19 @@ int main(){
 	inserirCaractereCadeiaFim(lista->fim->cadeia, 'a');
 	inserirCaractereCadeiaFim(lista->fim->cadeia, 'n');
 
+	removerCaractereCadeiaFim(lista->fim->cadeia);
+
 	LINHA *aux = lista->inicio;
 	while(aux != NULL){
 		printf("Cadeia: ");
 		imprimirCadeia(aux->cadeia);
 		printf("\n");
+		printf("Caracteres: %d\n",aux->cadeia->tamanho);
+		printf("\n");
 		aux = aux->prox;
 	}
+
+	printf("Qtd: %d\n", lista->tamanho);
 
 	/*
 	CADEIA *cadeia = (CADEIA*)malloc(sizeof(CADEIA));

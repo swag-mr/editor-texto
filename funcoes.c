@@ -29,7 +29,7 @@ LINHA* criarLinha(){
 }
 
 int listaEstaVazia(LISTA *l){
-    if(l->inicio == NULL){
+    if(l->inicio == NULL || l->fim == NULL){
         return 1;
     }
     return 0;
@@ -38,6 +38,7 @@ int listaEstaVazia(LISTA *l){
 void inserirLinhaInicio(LISTA *lista){
     LINHA *linha;
     linha = criarLinha();
+	lista->tamanho++;
 
     if(listaEstaVazia(lista)){
         lista->inicio = linha;
@@ -52,6 +53,7 @@ void inserirLinhaInicio(LISTA *lista){
 void inserirLinhaFim(LISTA *lista){
     LINHA *linha;
     linha = criarLinha();
+	lista->tamanho++;
 
     if(listaEstaVazia(lista)){
         lista->inicio = linha;
@@ -66,6 +68,7 @@ void inserirLinhaFim(LISTA *lista){
 void inserirLinhaPosicao(LISTA *lista, int pos){
     LINHA *linha;
     linha = criarLinha();
+	lista->tamanho++;
 
     if(listaEstaVazia(lista)){
         lista->inicio = linha;
@@ -128,12 +131,14 @@ void removerLinhaInicio(LISTA *lista){
         linhaAux = lista->inicio;
 
         lista->inicio = lista->inicio->prox;
-        lista->inicio->ant = NULL;
+		lista->tamanho--;
         free(linhaAux);
 
         if(lista->inicio == NULL){
             lista->fim = lista->inicio;
+			return;
         }
+        lista->inicio->ant = NULL;
     }
 }
 
@@ -146,12 +151,15 @@ void removerLinhaFim(LISTA *lista){
         linhaAux = lista->fim;
 
         lista->fim = lista->fim->ant;
-        lista->fim->prox = NULL;
+		lista->tamanho--;
         free(linhaAux);
 
         if(lista->fim == NULL){
             lista->inicio = lista->fim;
+			return;
         }
+
+        lista->fim->prox = NULL;
     }
 }
 
@@ -236,13 +244,15 @@ void removerCaractereCadeiaInicio(CADEIA *cadeia){
 
 	CARACTERE *aux = cadeia->inicio;
 	cadeia->inicio = aux->prox;
-	cadeia->inicio->ant = NULL;
-	free(aux);
 	cadeia->tamanho--;
 
+	free(aux);
 	if(cadeiaEstaVazia(cadeia)){
 		cadeia->fim = NULL;
+		return;
 	}
+
+	cadeia->inicio->ant = NULL;
 }
 
 void removerCaractereCadeiaFim(CADEIA *cadeia){
@@ -253,13 +263,13 @@ void removerCaractereCadeiaFim(CADEIA *cadeia){
 
 	CARACTERE *aux = cadeia->fim;
 	cadeia->fim = aux->ant;
-	cadeia->fim->prox = NULL;
-	free(aux);
 	cadeia->tamanho--;
+	free(aux);
 
 	if(cadeiaEstaVazia(cadeia)){
 		cadeia->inicio = NULL;
 	}
+	cadeia->fim->prox = NULL;
 }
 void removerCaractereCadeiaPosicao(CADEIA *cadeia, int pos){
 	if(pos > cadeia->tamanho){
