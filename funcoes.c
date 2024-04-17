@@ -46,7 +46,7 @@ void inserirLinhaInicio(LISTA *lista){
     }
 }
 
-void inserirLinhaFim(LISTA *l){
+void inserirLinhaFim(LISTA *lista){
     LINHA *linha;
     linha = criarLinha();
 
@@ -104,8 +104,8 @@ void inserirLinhaPosicao(LISTA *lista, int pos){
                     }
                 }
                 i++;
-                linhaAnterior = linhaAux;
-                linhaAux = linhaProx;
+                linhaAnterior = linha;
+                linha = linhaProx;
                 linhaProx = linhaProx->prox;
             }
             //Inserir no final

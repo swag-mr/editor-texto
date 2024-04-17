@@ -14,7 +14,7 @@ typedef struct cadeia{
 }CADEIA;
 
 typedef struct linha{
-    CADEIA cadeia;
+    CADEIA *cadeia;
     struct linha *ant;
     struct linha *prox;
 }LINHA;
