@@ -31,6 +31,16 @@ void inicializarLista(LISTA *l);
 int cadeiaEstaVazia(CADEIA *cadeia);
 
 CARACTERE *criarCaractere(char c);
+LINHA *criarLinha();
+
+int listaEstaVazia(LISTA *l);
+
+void inserirLinhaFim(LISTA *lista);
+void inserirLinhaInicio(LISTA *lista);
+void inserirLinhaPosicao(LISTA *lista, int pos);
+
+void removerLinhaInicio(LISTA *lista);
+void removerLinhaFim(LISTA *lista);
 
 void inserirCaractereCadeiaInicio(CADEIA *cadeia, char c);
 void inserirCaractereCadeiaFim(CADEIA *cadeia, char c);

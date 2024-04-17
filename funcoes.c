@@ -1,6 +1,7 @@
 void inicializarCadeia(CADEIA *c){
     c->inicio = NULL;
     c->fim = NULL;
+    c->tamanho = 0;
 }
 
 void inicializarLista(LISTA *l){
@@ -134,7 +135,7 @@ void removerLinhaInicio(LISTA *lista){
     }
 }
 
-void removerLinhaFinal(LISTA *lista){
+void removerLinhaFim(LISTA *lista){
     if(listaEstaVazia(lista)){
         printf("Lista vazia, impossivel remover!");
         return;
