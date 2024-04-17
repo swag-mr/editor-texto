@@ -1,5 +1,5 @@
-#ifndef _FUNCOES
-#define _FUNCOES
+#ifndef FUNCOES_H
+#define FUNCOES_H
 
 typedef struct caractere{
     struct caractere *ant;

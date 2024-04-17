@@ -1,3 +1,7 @@
+#include "funcoes.h"
+#include <stdio.h>
+#include <stdlib.h>
+
 void inicializarCadeia(CADEIA *c){
     c->inicio = NULL;
     c->fim = NULL;
