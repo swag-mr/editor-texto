@@ -398,3 +398,4 @@ void gravarListaArquivo(char *nome, LISTA *lista){
 	}
 	fclose(file);
 }
+
