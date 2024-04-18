@@ -4,29 +4,6 @@
 #include <windows.h>
 #include "funcoes.h"
 
-#define PAGE_UP 73
-#define PAGE_DOWN 81
-#define ARROW_UP 72
-#define ARROW_DOWN 80
-#define ARROW_LEFT 75
-#define ARROW_RIGHT 77
-#define BACKSPACE 8
-#define ENTER 13
-#define clear() printf("\033[H\033[J")
-#define clearTillEndLine() printf("\033[K")
-#define clearTillEndScreen() printf("\033[J")
-#define cursorPrevLine() printf("\033[F")
-#define cursorNextLine() printf("\033[E")
-#define cursorUp() printf("\033[A")
-#define cursorDown() printf("\033[B")
-#define cursorRight() printf("\033[C")
-#define cursorLeft() printf("\033[D")
-#define scrollDown() printf("\033[1S")
-#define scrollUp() printf("\033[1T")
-#define saveCursor() printf("\033[s");
-#define loadCursor() printf("\033[u");
-#define gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
-
 int main(){
 	int opc;
 
@@ -119,35 +96,14 @@ int main(){
 
 	char entrada;
 	int maxLinhas, maxColunas;
-	int contLinhas=0, contColunas=0;
 	int linhaAtual=1, colunaAtual=1;
 	getTerminalColumnsRows(&maxColunas, &maxLinhas);
 
-	LINHA *auxLinha = lista->inicio;
-
-	// Imprimir a tela ate os limites do terminal
-	while(auxLinha != NULL && contLinhas != maxLinhas){
-		CARACTERE *auxCaractere = auxLinha->cadeia->inicio;
-		contColunas=0;
-		while(auxCaractere != NULL && contColunas != maxColunas){
-			putchar(auxCaractere->c);
-			contColunas++;
-			auxCaractere = auxCaractere->prox;
-		}
-		cursorNextLine();
-		contLinhas++;
-		linhaAtual++;
-		auxLinha = auxLinha->prox;
-	}
-
 	LINHA *inicioBuffer = lista->inicio;
 	LINHA *atualBuffer = inicioBuffer;
-	LINHA *fimBuffer;
-	if(auxLinha != NULL){
-		fimBuffer = auxLinha->ant;
-	}else{
-		fimBuffer = inicioBuffer;
-	}	
+	
+	// Imprimir a tela ate os limites do terminal e armazenar a última linha percorrida
+	LINHA *fimBuffer = escreverCadeiasTela(lista->inicio, 1, maxLinhas, 1, maxColunas);
 
 	gotoxy(1,1); // Posiciona o cursor no canto superior direito
 
@@ -191,9 +147,10 @@ int main(){
 				clearTillEndScreen();
 				cursorNextLine();
 				inserirLinhaPosicao(lista, linhaAtual++);
-				auxLinha = atualBuffer;
-				//while(auxLinha != NULL && linhaAtual !
-				fimBuffer = fimBuffer->ant;
+				atualBuffer = atualBuffer->prox;
+				saveCursor();
+				fimBuffer = escreverCadeiasTela(atualBuffer, getCursorRow(), maxLinhas, 1, maxColunas);
+				loadCursor();
 				break;
 
 			case PAGE_UP:

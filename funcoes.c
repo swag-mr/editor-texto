@@ -453,3 +453,47 @@ void getTerminalColumnsRows(int *columns, int *rows){
     *columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
     *rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
 }
+
+LINHA *escreverCadeiasTela(LINHA *inicio, int startLinha, int endLinha, int startColuna, int endColuna){
+	LINHA *aux = inicio;
+	LINHA *ant = NULL;
+	int contLinhas = startLinha;
+	while(aux != NULL && contLinhas <= endLinha){
+		CARACTERE *auxCaractere = aux->cadeia->inicio;
+		int contColunas=startColuna;
+		while(auxCaractere != NULL && contColunas <= endColuna){
+			putchar(auxCaractere->c);
+			contColunas++;
+			auxCaractere = auxCaractere->prox;
+		}
+		cursorNextLine();
+		contLinhas++;
+		ant = aux;
+		aux = aux->prox;
+	}
+	if(ant == NULL){
+		return inicio;
+	}
+	return ant;
+}
+
+int getCursorRow(){
+	int row=0;
+	int c;
+
+	cursorPosition();
+
+	getch(); //eliminates the \033
+	getch(); //eliminates the [
+	c = getch(); //read first number
+	while(c != ';'){
+		row = row*10 + (int)c - '0';
+		c = getch();
+	}
+
+	while(c != 'R'){
+		c = getch();
+	}
+		
+	return row;
+}
