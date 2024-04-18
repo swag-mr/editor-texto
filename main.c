@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
+#include <windows.h>
 #include "funcoes.h"
 
 #define PAGE_UP 73
@@ -12,15 +13,17 @@
 #define BACKSPACE 8
 #define ENTER 13
 #define clear() printf("\033[H\033[J")
-#define clearTillEnd() printf("\033[K")
+#define clearTillEndLine() printf("\033[K")
+#define clearTillEndScreen() printf("\033[J")
 #define cursorPrevLine() printf("\033[F")
 #define cursorNextLine() printf("\033[E")
 #define cursorUp() printf("\033[A")
 #define cursorDown() printf("\033[B")
 #define cursorRight() printf("\033[C")
 #define cursorLeft() printf("\033[D")
-#define scrollDown() printf("\033[10S")
-#define scrollUp() printf("\033[10T")
+#define scrollDown() printf("\033[1S")
+#define scrollUp() printf("\033[1T")
+#define gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
 
 int main(){
 	int opc;
@@ -61,36 +64,61 @@ int main(){
 
 	clear();
 
+	char entrada;
+	int maxLinhas, maxColunas;
+	int contLinhas=0, contColunas=0;
+	int linhaAtual=1, colunaAtual=1;
+	getTerminalColumnsRows(&maxColunas, &maxLinhas);
+
 	LINHA *auxLinha = lista->inicio;
-	while(auxLinha != NULL){
+
+	// Imprimir a tela ate os limites do terminal
+	while(auxLinha != NULL && contLinhas != maxLinhas){
 		CARACTERE *auxCaractere = auxLinha->cadeia->inicio;
-		while(auxCaractere != NULL){
+		contColunas=0;
+		while(auxCaractere != NULL && contColunas != maxColunas){
 			putchar(auxCaractere->c);
+			contColunas++;
 			auxCaractere = auxCaractere->prox;
 		}
 		cursorNextLine();
+		contLinhas++;
+		linhaAtual++;
 		auxLinha = auxLinha->prox;
 	}
 
-	char entrada;
+	LINHA *inicioBuffer = lista->inicio;
+	LINHA *fimBuffer;
+	if(auxLinha != NULL){
+		fimBuffer = auxLinha->ant;
+	}else{
+		fimBuffer = inicioBuffer;
+	}	
+
+	gotoxy(1,1); // Posiciona o cursor no canto superior direito
+
 	do{
 		entrada = getch();
 
 		switch(entrada){
 			case ARROW_UP:
 				cursorUp();
+				linhaAtual--;
 				break;
 
 			case ARROW_DOWN:
 				cursorDown();
+				linhaAtual++;
 				break;
 
 			case ARROW_LEFT:
 				cursorLeft();
+				colunaAtual--;
 				break;
 
 			case ARROW_RIGHT:
 				cursorRight();
+				colunaAtual++;
 				break;
 
 			case BACKSPACE:
@@ -100,21 +128,34 @@ int main(){
 				break;
 
 			case ENTER:
-				clearTillEnd();
+				clearTillEndScreen();
 				cursorNextLine();
 				break;
 
 			case PAGE_UP:
-				scrollUp();
+				if(inicioBuffer->ant != NULL){
+					scrollUp();
+					gotoxy(1,1);
+					inicioBuffer = inicioBuffer->ant;
+					fimBuffer = fimBuffer->ant;
+					imprimirCadeia(inicioBuffer->cadeia);
+				}
 				break;
 
 			case PAGE_DOWN:
-				scrollDown();
+				if(fimBuffer->prox != NULL){
+					scrollDown();
+					gotoxy(1,maxLinhas);
+					fimBuffer = fimBuffer->prox;
+					inicioBuffer = inicioBuffer->prox;
+					imprimirCadeia(fimBuffer->cadeia);
+				}
 				break;
 			default:
 				break;
 		}
 	}while(entrada != '0');
+	clear();
 	//gravarListaArquivo("./arquivos/novo.txt", lista);
     return 0;
 }
