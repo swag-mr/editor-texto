@@ -23,6 +23,8 @@
 #define cursorLeft() printf("\033[D")
 #define scrollDown() printf("\033[1S")
 #define scrollUp() printf("\033[1T")
+#define saveCursor() printf("\033[s");
+#define loadCursor() printf("\033[u");
 #define gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
 
 int main(){
@@ -139,6 +141,7 @@ int main(){
 	}
 
 	LINHA *inicioBuffer = lista->inicio;
+	LINHA *atualBuffer = inicioBuffer;
 	LINHA *fimBuffer;
 	if(auxLinha != NULL){
 		fimBuffer = auxLinha->ant;
@@ -153,13 +156,19 @@ int main(){
 
 		switch(entrada){
 			case ARROW_UP:
-				cursorUp();
-				linhaAtual--;
+				if(atualBuffer != inicioBuffer){
+					cursorUp();
+					linhaAtual--;
+					atualBuffer = atualBuffer->ant;
+				}
 				break;
 
 			case ARROW_DOWN:
-				cursorDown();
-				linhaAtual++;
+				if(atualBuffer != fimBuffer){
+					cursorDown();
+					linhaAtual++;
+					atualBuffer = atualBuffer->prox;
+				}
 				break;
 
 			case ARROW_LEFT:
@@ -181,25 +190,37 @@ int main(){
 			case ENTER:
 				clearTillEndScreen();
 				cursorNextLine();
+				inserirLinhaPosicao(lista, linhaAtual++);
+				auxLinha = atualBuffer;
+				//while(auxLinha != NULL && linhaAtual !
+				fimBuffer = fimBuffer->ant;
 				break;
 
 			case PAGE_UP:
 				if(inicioBuffer->ant != NULL){
+					saveCursor();
 					scrollUp();
 					gotoxy(1,1);
+					linhaAtual--;
+					atualBuffer = atualBuffer->ant;
 					inicioBuffer = inicioBuffer->ant;
 					fimBuffer = fimBuffer->ant;
 					imprimirCadeia(inicioBuffer->cadeia);
+					loadCursor();
 				}
 				break;
 
 			case PAGE_DOWN:
 				if(fimBuffer->prox != NULL){
+					saveCursor();
 					scrollDown();
 					gotoxy(1,maxLinhas);
+					linhaAtual++;
+					atualBuffer = atualBuffer->prox;
 					fimBuffer = fimBuffer->prox;
 					inicioBuffer = inicioBuffer->prox;
 					imprimirCadeia(fimBuffer->cadeia);
+					loadCursor();
 				}
 				break;
 			default:
