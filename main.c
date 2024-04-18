@@ -62,6 +62,7 @@ int main(){
 	// 	aux1 = aux1->prox;
 	// }
 
+	/* NAO APAGAR ESSE COMENTARIO
 	do{
 		printf("1 - Editar novo arquivo\n");
 		printf("2 - Editar arquivo existente\n");
@@ -90,8 +91,9 @@ int main(){
 				printf("Opção inválida\n");
 				break;
 		}
-	}while(opc > 3 || opc < 1);
+	}while(opc > 3 || opc < 1);*/
 
+	lerArquivoLista("./arquivos/texto.txt", lista);
 	clear();
 
 	char entrada;
@@ -110,33 +112,69 @@ int main(){
 	do{
 		entrada = getch();
 
+		if(entrada == -32){
+			entrada = getch();
+
+			switch(entrada){
+				case ARROW_UP:
+					if(atualBuffer != inicioBuffer){
+						cursorUp();
+						linhaAtual--;
+						atualBuffer = atualBuffer->ant;
+					}
+					break;
+
+				case ARROW_DOWN:
+					if(atualBuffer != fimBuffer){
+						cursorDown();
+						linhaAtual++;
+						atualBuffer = atualBuffer->prox;
+					}
+					break;
+
+				case ARROW_LEFT:
+					cursorLeft();
+					colunaAtual--;
+					break;
+
+				case ARROW_RIGHT:
+					cursorRight();
+					colunaAtual++;
+					break;
+				case PAGE_UP:
+					if(inicioBuffer->ant != NULL){
+						saveCursor();
+						scrollUp();
+						gotoxy(1,1);
+						linhaAtual--;
+						atualBuffer = atualBuffer->ant;
+						inicioBuffer = inicioBuffer->ant;
+						fimBuffer = fimBuffer->ant;
+						imprimirCadeia(inicioBuffer->cadeia);
+						loadCursor();
+					}
+					break;
+
+				case PAGE_DOWN:
+					if(fimBuffer->prox != NULL){
+						saveCursor();
+						scrollDown();
+						gotoxy(1,maxLinhas);
+						linhaAtual++;
+						atualBuffer = atualBuffer->prox;
+						fimBuffer = fimBuffer->prox;
+						inicioBuffer = inicioBuffer->prox;
+						imprimirCadeia(fimBuffer->cadeia);
+						loadCursor();
+					}
+					break;
+				default:
+					break;
+			}
+			continue;
+		}
+
 		switch(entrada){
-			case ARROW_UP:
-				if(atualBuffer != inicioBuffer){
-					cursorUp();
-					linhaAtual--;
-					atualBuffer = atualBuffer->ant;
-				}
-				break;
-
-			case ARROW_DOWN:
-				if(atualBuffer != fimBuffer){
-					cursorDown();
-					linhaAtual++;
-					atualBuffer = atualBuffer->prox;
-				}
-				break;
-
-			case ARROW_LEFT:
-				cursorLeft();
-				colunaAtual--;
-				break;
-
-			case ARROW_RIGHT:
-				cursorRight();
-				colunaAtual++;
-				break;
-
 			case BACKSPACE:
 				cursorLeft();
 				putch(' ');
@@ -153,34 +191,8 @@ int main(){
 				loadCursor();
 				break;
 
-			case PAGE_UP:
-				if(inicioBuffer->ant != NULL){
-					saveCursor();
-					scrollUp();
-					gotoxy(1,1);
-					linhaAtual--;
-					atualBuffer = atualBuffer->ant;
-					inicioBuffer = inicioBuffer->ant;
-					fimBuffer = fimBuffer->ant;
-					imprimirCadeia(inicioBuffer->cadeia);
-					loadCursor();
-				}
-				break;
-
-			case PAGE_DOWN:
-				if(fimBuffer->prox != NULL){
-					saveCursor();
-					scrollDown();
-					gotoxy(1,maxLinhas);
-					linhaAtual++;
-					atualBuffer = atualBuffer->prox;
-					fimBuffer = fimBuffer->prox;
-					inicioBuffer = inicioBuffer->prox;
-					imprimirCadeia(fimBuffer->cadeia);
-					loadCursor();
-				}
-				break;
 			default:
+				putch(entrada);
 				break;
 		}
 	}while(entrada != '0');
