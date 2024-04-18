@@ -28,7 +28,58 @@ int main(){
 	LISTA *lista = (LISTA*) malloc(sizeof(LISTA));
 
 	inicializarLista(lista);
-	
+
+	// inserirLinhaInicio(lista);
+	// inserirLinhaInicio(lista);
+	// inserirLinhaInicio(lista);
+
+	// inserirCaractereCadeiaFim(lista->inicio->cadeia, 'J');
+	// inserirCaractereCadeiaFim(lista->inicio->cadeia, 'o');
+	// inserirCaractereCadeiaFim(lista->inicio->cadeia, 's');
+	// inserirCaractereCadeiaFim(lista->inicio->cadeia, 'e');
+
+	// inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 'V');
+	// inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 'i');
+	// inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 't');
+	// inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 'o');
+	// inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 'r');
+
+	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'K');
+	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'a');
+	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'u');
+	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'a');
+	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'n');
+
+	// removerCaractereCadeiaFim(lista->fim->cadeia);
+
+	// LINHA *aux = lista->inicio;
+	// while(aux != NULL){
+	// 	printf("Cadeia: ");
+	// 	imprimirCadeia(aux->cadeia);
+	// 	printf("\n");
+	// 	printf("Caracteres: %d\n",aux->cadeia->tamanho);
+	// 	printf("\n");
+	// 	aux = aux->prox;
+	// }
+
+	// printf("\n\n=====================\n\n");
+
+	// inserirLinhaPosicao(lista, 3);
+
+	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'H');
+	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'E');
+	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'O');
+
+	// LINHA *aux1 = lista->inicio;
+	// while(aux1 != NULL){
+	// 	printf("Cadeia: ");
+	// 	imprimirCadeia(aux1->cadeia);
+	// 	printf("\n");
+	// 	printf("Caracteres: %d\n",aux1->cadeia->tamanho);
+	// 	printf("\n");
+	// 	aux1 = aux1->prox;
+	// }
+
 	do{
 		printf("1 - Editar novo arquivo\n");
 		printf("2 - Editar arquivo existente\n");
@@ -37,7 +88,7 @@ int main(){
 		scanf("%d", &opc);
 
 		fflush(stdin);
-		
+
 		switch(opc){
 			char arquivo[100];
 			case 1:
@@ -115,6 +166,6 @@ int main(){
 				break;
 		}
 	}while(entrada != '0');
-	//gravarListaArquivo("./arquivos/novo.txt", lista);
+	gravarListaArquivo("./arquivos/novo.txt", lista);
     return 0;
 }
