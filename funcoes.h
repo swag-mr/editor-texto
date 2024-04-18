@@ -54,5 +54,6 @@ void imprimirCadeiaInversa(CADEIA *cadeia);
 
 void lerArquivoLista(char *nome, LISTA *lista);
 void gravarListaArquivo(char *nome, LISTA *lista);
+void getTerminalColumnsRows(int *columns, int *rows);
 #include "funcoes.c"
 #endif
