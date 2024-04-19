@@ -93,7 +93,7 @@ int main(){
 		}
 	}while(opc > 3 || opc < 1);*/
 
-	lerArquivoLista("./arquivos/texto.txt", lista);
+	lerArquivoLista("./arquivos/japones.txt", lista);
 	clear();
 
 	int entrada;
@@ -199,6 +199,6 @@ int main(){
 		}
 	}while(entrada != '0');
 	clear();
-	//gravarListaArquivo("./arquivos/novo.txt", lista);
+	gravarListaArquivo("./arquivos/novo.txt", lista);
     return 0;
 }

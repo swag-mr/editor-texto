@@ -426,8 +426,9 @@ void lerArquivoLista(char *nome, LISTA *lista){
 		}else{
 			int caractereCompleto[4] = {0,0,0,0};
 			int i=0;
-			while(i < numberOfBytesInChar((unsigned char)caractere) - 1) {
-				caractereCompleto[i++] = caractere;
+			int nBytes = numberOfBytesInChar((unsigned char)caractere)-1;
+			for(i=0;i < nBytes;i++) {
+				caractereCompleto[i] = caractere;
 				caractere = fgetc(file);
 			}
 			caractereCompleto[i] = caractere;
@@ -445,7 +446,8 @@ void gravarListaArquivo(char *nome, LISTA *lista){
 	while(auxLinha != NULL){
 		CARACTERE *auxCadeia = auxLinha->cadeia->inicio;
 		while(auxCadeia != NULL){
-			for(int i=0; i < 4; i++){
+			int i;
+			for(i=0; i < 4 && auxCadeia->c[i] != 0; i++){
 				fputc(auxCadeia->c[i], file);
 			}
 			auxCadeia = auxCadeia->prox;
