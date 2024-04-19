@@ -115,7 +115,7 @@ void inserirLinhaPosicao(LISTA *lista, int pos){
 			LINHA *linhaProx = NULL;
 			LINHA *linhaAtual;
 			linhaAtual = lista->fim;
-			int i=0;
+			int i=lista->tamanho;
 
 			while(linhaAtual != NULL){
 				if(i == pos){
@@ -126,7 +126,7 @@ void inserirLinhaPosicao(LISTA *lista, int pos){
 					linha->ant = linhaAtual;
 					return;
 				}
-				i++;
+				i--;
 				linhaProx = linhaAtual;
 				linhaAtual = linhaAtual->ant;
 			}
