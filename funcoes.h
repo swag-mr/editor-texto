@@ -28,7 +28,7 @@
 typedef struct caractere{
     struct caractere *ant;
     struct caractere *prox;
-    char c;
+    int c[4];
 }CARACTERE;
 
 typedef struct cadeia{
@@ -55,7 +55,7 @@ void inicializarLista(LISTA *l);
 int cadeiaEstaVazia(CADEIA *cadeia);
 int listaEstaVazia(LISTA *l);
 
-CARACTERE *criarCaractere(char c);
+CARACTERE *criarCaractere(int c[4]);
 LINHA *criarLinha();
 
 void inserirLinhaFim(LISTA *lista);
@@ -65,9 +65,9 @@ void inserirLinhaPosicao(LISTA *lista, int pos);
 void removerLinhaInicio(LISTA *lista);
 void removerLinhaFim(LISTA *lista);
 
-void inserirCaractereCadeiaInicio(CADEIA *cadeia, char c);
-void inserirCaractereCadeiaFim(CADEIA *cadeia, char c);
-void inserirCaractereCadeiaPosicao(CADEIA *cadeia, char c, int pos);
+void inserirCaractereCadeiaInicio(CADEIA *cadeia, int c[4]);
+void inserirCaractereCadeiaFim(CADEIA *cadeia, int c[4]);
+void inserirCaractereCadeiaPosicao(CADEIA *cadeia, int c[4], int pos);
 
 void removerCaractereCadeiaInicio(CADEIA *cadeia);
 void removerCaractereCadeiaFim(CADEIA *cadeia);
@@ -83,5 +83,7 @@ void getTerminalColumnsRows(int *columns, int *rows);
 LINHA *escreverCadeiasTela(LINHA *inicio, int startLinha, int endLinha, int startColuna, int endColuna);
 
 int getCursorRow();
+
+int numberOfBytesInChar(unsigned char val);
 #include "funcoes.c"
 #endif

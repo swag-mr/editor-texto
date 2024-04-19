@@ -96,7 +96,7 @@ int main(){
 	lerArquivoLista("./arquivos/texto.txt", lista);
 	clear();
 
-	char entrada;
+	int entrada;
 	int maxLinhas, maxColunas;
 	int linhaAtual=1, colunaAtual=1;
 	getTerminalColumnsRows(&maxColunas, &maxLinhas);
@@ -107,12 +107,18 @@ int main(){
 	// Imprimir a tela ate os limites do terminal e armazenar a última linha percorrida
 	LINHA *fimBuffer = escreverCadeiasTela(lista->inicio, 1, maxLinhas, 1, maxColunas);
 
-	gotoxy(1,1); // Posiciona o cursor no canto superior direito
-
 	do{
+		int posY = getCursorRow();
+		saveCursor();
+		gotoxy(maxColunas-3, 1);
+		clearTillEndLine();
+		gotoxy(maxColunas-3, 1);
+		printf("%d", atualBuffer->cadeia->tamanho);
+		loadCursor();
+
 		entrada = getch();
 
-		if(entrada == -32){
+		if(entrada == 224 || entrada == 0){
 			entrada = getch();
 
 			switch(entrada){
@@ -143,29 +149,23 @@ int main(){
 					break;
 				case PAGE_UP:
 					if(inicioBuffer->ant != NULL){
-						saveCursor();
 						scrollUp();
-						gotoxy(1,1);
 						linhaAtual--;
 						atualBuffer = atualBuffer->ant;
 						inicioBuffer = inicioBuffer->ant;
 						fimBuffer = fimBuffer->ant;
-						imprimirCadeia(inicioBuffer->cadeia);
-						loadCursor();
+						escreverCadeiasTela(inicioBuffer, 1, 1, 1, maxColunas);
 					}
 					break;
 
 				case PAGE_DOWN:
 					if(fimBuffer->prox != NULL){
-						saveCursor();
 						scrollDown();
-						gotoxy(1,maxLinhas);
 						linhaAtual++;
 						atualBuffer = atualBuffer->prox;
 						fimBuffer = fimBuffer->prox;
 						inicioBuffer = inicioBuffer->prox;
-						imprimirCadeia(fimBuffer->cadeia);
-						loadCursor();
+						escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
 					}
 					break;
 				default:
@@ -186,13 +186,15 @@ int main(){
 				cursorNextLine();
 				inserirLinhaPosicao(lista, linhaAtual++);
 				atualBuffer = atualBuffer->prox;
-				saveCursor();
 				fimBuffer = escreverCadeiasTela(atualBuffer, getCursorRow(), maxLinhas, 1, maxColunas);
-				loadCursor();
 				break;
 
 			default:
-				putch(entrada);
+				for (int i = 0; i < numberOfBytesInChar((unsigned char)entrada) - 1; i++) {
+					printf("%c", entrada);
+					entrada = getch();
+				}
+				printf("%c", entrada);
 				break;
 		}
 	}while(entrada != '0');
