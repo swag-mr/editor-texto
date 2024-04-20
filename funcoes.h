@@ -25,10 +25,19 @@
 #define gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
 #define cursorPosition() printf("\033[6n")
 
+typedef struct utf_byte{
+	unsigned char byte;
+	struct utf_byte *prox;
+}UTFBYTE;
+
+typedef struct utf_char{
+	UTFBYTE *inicio;
+}UTFCHAR;
+
 typedef struct caractere{
     struct caractere *ant;
     struct caractere *prox;
-    int c[4];
+    UTFCHAR *utfChar;
 }CARACTERE;
 
 typedef struct cadeia{
@@ -51,12 +60,16 @@ typedef struct lista{
 
 void inicializarCadeia(CADEIA *c);
 void inicializarLista(LISTA *l);
+void inicializarUtfChar(UTFCHAR *u);
 
 int cadeiaEstaVazia(CADEIA *cadeia);
 int listaEstaVazia(LISTA *l);
 
-CARACTERE *criarCaractere(int c[4]);
+UTFBYTE *criarUtfByte(unsigned char c);
+CARACTERE *criarCaractere(UTFCHAR *c);
 LINHA *criarLinha();
+
+void inserirUtfByte(UTFCHAR *u, unsigned char c);
 
 void inserirLinhaFim(LISTA *lista);
 void inserirLinhaInicio(LISTA *lista);
@@ -65,16 +78,13 @@ void inserirLinhaPosicao(LISTA *lista, int pos);
 void removerLinhaInicio(LISTA *lista);
 void removerLinhaFim(LISTA *lista);
 
-void inserirCaractereCadeiaInicio(CADEIA *cadeia, int c[4]);
-void inserirCaractereCadeiaFim(CADEIA *cadeia, int c[4]);
-void inserirCaractereCadeiaPosicao(CADEIA *cadeia, int c[4], int pos);
+void inserirCaractereCadeiaInicio(CADEIA *cadeia, UTFCHAR *c);
+void inserirCaractereCadeiaFim(CADEIA *cadeia, UTFCHAR *c);
+void inserirCaractereCadeiaPosicao(CADEIA *cadeia, UTFCHAR *c, int pos);
 
 void removerCaractereCadeiaInicio(CADEIA *cadeia);
 void removerCaractereCadeiaFim(CADEIA *cadeia);
 void removerCaractereCadeiaPosicao(CADEIA *cadeia, int pos);
-
-void imprimirCadeia(CADEIA *cadeia);
-void imprimirCadeiaInversa(CADEIA *cadeia);
 
 void lerArquivoLista(char *nome, LISTA *lista);
 void gravarListaArquivo(char *nome, LISTA *lista);
