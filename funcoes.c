@@ -536,3 +536,16 @@ int numberOfBytesInChar(unsigned char val){
 		return 4;
 	}
 }
+
+LINHA *determinarFimBuffer(LINHA *inicio, int start, int end){
+	LINHA *ant = NULL;
+	LINHA *aux = inicio;
+	int cont = start;
+	while(aux != NULL && cont <= end){
+		cont++;
+		ant = aux;
+		aux = aux->prox;
+	}
+
+	return ant;
+}

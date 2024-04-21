@@ -24,6 +24,9 @@
 #define loadCursor() printf("\033[u");
 #define gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
 #define cursorPosition() printf("\033[6n")
+#define lineFeed() printf("\033[1L");
+#define inserirChar() printf("\033[1@");
+#define removerChar() printf("\033[1P");
 
 typedef struct utf_byte{
 	unsigned char byte;
@@ -91,6 +94,7 @@ void gravarListaArquivo(char *nome, LISTA *lista);
 void getTerminalColumnsRows(int *columns, int *rows);
 
 LINHA *escreverCadeiasTela(LINHA *inicio, int startLinha, int endLinha, int startColuna, int endColuna);
+LINHA *determinarFimBuffer(LINHA *inicio, int start, int end);
 
 int getCursorRow();
 

@@ -126,19 +126,21 @@ int main(){
 		switch(entrada){
 			case BACKSPACE:
 				cursorLeft();
-				putch(' ');
-				cursorLeft();
+				removerChar();
 				break;
 
 			case ENTER:
-				clearTillEndScreen();
+				clearTillEndLine();
 				cursorNextLine();
+				lineFeed();
 				inserirLinhaPosicao(lista, linhaAtual++);
 				atualBuffer = atualBuffer->prox;
-				fimBuffer = escreverCadeiasTela(atualBuffer, getCursorRow(), maxLinhas, 1, maxColunas);
+				fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas);
+				//fimBuffer = escreverCadeiasTela(atualBuffer, getCursorRow(), maxLinhas, 1, maxColunas);
 				break;
 
 			default:
+				inserirChar();
 				for (int i = 0; i < numberOfBytesInChar((unsigned char)entrada) - 1; i++) {
 					printf("%c", entrada);
 					entrada = getch();
