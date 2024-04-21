@@ -42,7 +42,7 @@ int main(){
 		}
 	}while(opc > 3 || opc < 1);*/
 
-	lerArquivoLista("./arquivos/japones.txt", lista);
+	lerArquivoLista("./arquivos/texto.txt", lista);
 	clear();
 
 	int entrada;
