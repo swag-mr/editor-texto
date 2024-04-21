@@ -11,57 +11,6 @@ int main(){
 
 	inicializarLista(lista);
 
-	// inserirLinhaInicio(lista);
-	// inserirLinhaInicio(lista);
-	// inserirLinhaInicio(lista);
-
-	// inserirCaractereCadeiaFim(lista->inicio->cadeia, 'J');
-	// inserirCaractereCadeiaFim(lista->inicio->cadeia, 'o');
-	// inserirCaractereCadeiaFim(lista->inicio->cadeia, 's');
-	// inserirCaractereCadeiaFim(lista->inicio->cadeia, 'e');
-
-	// inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 'V');
-	// inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 'i');
-	// inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 't');
-	// inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 'o');
-	// inserirCaractereCadeiaFim(lista->inicio->prox->cadeia, 'r');
-
-	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'K');
-	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'a');
-	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'u');
-	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'a');
-	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'n');
-
-	// removerCaractereCadeiaFim(lista->fim->cadeia);
-
-	// LINHA *aux = lista->inicio;
-	// while(aux != NULL){
-	// 	printf("Cadeia: ");
-	// 	imprimirCadeia(aux->cadeia);
-	// 	printf("\n");
-	// 	printf("Caracteres: %d\n",aux->cadeia->tamanho);
-	// 	printf("\n");
-	// 	aux = aux->prox;
-	// }
-
-	// printf("\n\n=====================\n\n");
-
-	// inserirLinhaPosicao(lista, 3);
-
-	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'H');
-	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'E');
-	// inserirCaractereCadeiaFim(lista->fim->cadeia, 'O');
-
-	// LINHA *aux1 = lista->inicio;
-	// while(aux1 != NULL){
-	// 	printf("Cadeia: ");
-	// 	imprimirCadeia(aux1->cadeia);
-	// 	printf("\n");
-	// 	printf("Caracteres: %d\n",aux1->cadeia->tamanho);
-	// 	printf("\n");
-	// 	aux1 = aux1->prox;
-	// }
-
 	/* NAO APAGAR ESSE COMENTARIO
 	do{
 		printf("1 - Editar novo arquivo\n");
@@ -96,7 +45,7 @@ int main(){
 	lerArquivoLista("./arquivos/texto.txt", lista);
 	clear();
 
-	char entrada;
+	int entrada;
 	int maxLinhas, maxColunas;
 	int linhaAtual=1, colunaAtual=1;
 	getTerminalColumnsRows(&maxColunas, &maxLinhas);
@@ -107,12 +56,18 @@ int main(){
 	// Imprimir a tela ate os limites do terminal e armazenar a última linha percorrida
 	LINHA *fimBuffer = escreverCadeiasTela(lista->inicio, 1, maxLinhas, 1, maxColunas);
 
-	gotoxy(1,1); // Posiciona o cursor no canto superior direito
-
 	do{
+		int posY = getCursorRow();
+		saveCursor();
+		gotoxy(maxColunas-3, 1);
+		clearTillEndLine();
+		gotoxy(maxColunas-3, 1);
+		printf("%d", atualBuffer->cadeia->tamanho);
+		loadCursor();
+
 		entrada = getch();
 
-		if(entrada == -32){
+		if(entrada == 224 || entrada == 0){
 			entrada = getch();
 
 			switch(entrada){
@@ -143,29 +98,23 @@ int main(){
 					break;
 				case PAGE_UP:
 					if(inicioBuffer->ant != NULL){
-						saveCursor();
 						scrollUp();
-						gotoxy(1,1);
 						linhaAtual--;
 						atualBuffer = atualBuffer->ant;
 						inicioBuffer = inicioBuffer->ant;
 						fimBuffer = fimBuffer->ant;
-						imprimirCadeia(inicioBuffer->cadeia);
-						loadCursor();
+						escreverCadeiasTela(inicioBuffer, 1, 1, 1, maxColunas);
 					}
 					break;
 
 				case PAGE_DOWN:
 					if(fimBuffer->prox != NULL){
-						saveCursor();
 						scrollDown();
-						gotoxy(1,maxLinhas);
 						linhaAtual++;
 						atualBuffer = atualBuffer->prox;
 						fimBuffer = fimBuffer->prox;
 						inicioBuffer = inicioBuffer->prox;
-						imprimirCadeia(fimBuffer->cadeia);
-						loadCursor();
+						escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
 					}
 					break;
 				default:
@@ -177,26 +126,30 @@ int main(){
 		switch(entrada){
 			case BACKSPACE:
 				cursorLeft();
-				putch(' ');
-				cursorLeft();
+				removerChar();
 				break;
 
 			case ENTER:
-				clearTillEndScreen();
+				clearTillEndLine();
 				cursorNextLine();
+				lineFeed();
 				inserirLinhaPosicao(lista, linhaAtual++);
 				atualBuffer = atualBuffer->prox;
-				saveCursor();
-				fimBuffer = escreverCadeiasTela(atualBuffer, getCursorRow(), maxLinhas, 1, maxColunas);
-				loadCursor();
+				fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas);
+				//fimBuffer = escreverCadeiasTela(atualBuffer, getCursorRow(), maxLinhas, 1, maxColunas);
 				break;
 
 			default:
-				putch(entrada);
+				inserirChar();
+				for (int i = 0; i < numberOfBytesInChar((unsigned char)entrada) - 1; i++) {
+					printf("%c", entrada);
+					entrada = getch();
+				}
+				printf("%c", entrada);
 				break;
 		}
 	}while(entrada != '0');
 	clear();
-	//gravarListaArquivo("./arquivos/novo.txt", lista);
+	gravarListaArquivo("./arquivos/novo.txt", lista);
     return 0;
 }

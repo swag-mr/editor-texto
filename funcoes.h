@@ -24,11 +24,23 @@
 #define loadCursor() printf("\033[u");
 #define gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
 #define cursorPosition() printf("\033[6n")
+#define lineFeed() printf("\033[1L");
+#define inserirChar() printf("\033[1@");
+#define removerChar() printf("\033[1P");
+
+typedef struct utf_byte{
+	unsigned char byte;
+	struct utf_byte *prox;
+}UTFBYTE;
+
+typedef struct utf_char{
+	UTFBYTE *inicio;
+}UTFCHAR;
 
 typedef struct caractere{
     struct caractere *ant;
     struct caractere *prox;
-    char c;
+    UTFCHAR *utfChar;
 }CARACTERE;
 
 typedef struct cadeia{
@@ -51,12 +63,16 @@ typedef struct lista{
 
 void inicializarCadeia(CADEIA *c);
 void inicializarLista(LISTA *l);
+void inicializarUtfChar(UTFCHAR *u);
 
 int cadeiaEstaVazia(CADEIA *cadeia);
 int listaEstaVazia(LISTA *l);
 
-CARACTERE *criarCaractere(char c);
+UTFBYTE *criarUtfByte(unsigned char c);
+CARACTERE *criarCaractere(UTFCHAR *c);
 LINHA *criarLinha();
+
+void inserirUtfByte(UTFCHAR *u, unsigned char c);
 
 void inserirLinhaFim(LISTA *lista);
 void inserirLinhaInicio(LISTA *lista);
@@ -65,23 +81,23 @@ void inserirLinhaPosicao(LISTA *lista, int pos);
 void removerLinhaInicio(LISTA *lista);
 void removerLinhaFim(LISTA *lista);
 
-void inserirCaractereCadeiaInicio(CADEIA *cadeia, char c);
-void inserirCaractereCadeiaFim(CADEIA *cadeia, char c);
-void inserirCaractereCadeiaPosicao(CADEIA *cadeia, char c, int pos);
+void inserirCaractereCadeiaInicio(CADEIA *cadeia, UTFCHAR *c);
+void inserirCaractereCadeiaFim(CADEIA *cadeia, UTFCHAR *c);
+void inserirCaractereCadeiaPosicao(CADEIA *cadeia, UTFCHAR *c, int pos);
 
 void removerCaractereCadeiaInicio(CADEIA *cadeia);
 void removerCaractereCadeiaFim(CADEIA *cadeia);
 void removerCaractereCadeiaPosicao(CADEIA *cadeia, int pos);
-
-void imprimirCadeia(CADEIA *cadeia);
-void imprimirCadeiaInversa(CADEIA *cadeia);
 
 void lerArquivoLista(char *nome, LISTA *lista);
 void gravarListaArquivo(char *nome, LISTA *lista);
 void getTerminalColumnsRows(int *columns, int *rows);
 
 LINHA *escreverCadeiasTela(LINHA *inicio, int startLinha, int endLinha, int startColuna, int endColuna);
+LINHA *determinarFimBuffer(LINHA *inicio, int start, int end);
 
 int getCursorRow();
+
+int numberOfBytesInChar(unsigned char val);
 #include "funcoes.c"
 #endif

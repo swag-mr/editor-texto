@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void inicializarUtfChar(UTFCHAR *u){
+	u->inicio = NULL;
+}
+
 void inicializarCadeia(CADEIA *c){
     c->inicio = NULL;
     c->fim = NULL;
@@ -14,11 +18,18 @@ void inicializarLista(LISTA *l){
     l->tamanho = 0;
 }
 
-CARACTERE* criarCaractere(char c){
+UTFBYTE *criarUtfByte(unsigned char c){
+	UTFBYTE *utfByte = (UTFBYTE*)malloc(sizeof(UTFBYTE));
+	utfByte->byte = c;
+	utfByte->prox = NULL;
+	return utfByte;
+}
+
+CARACTERE* criarCaractere(UTFCHAR *c){
     CARACTERE *caractere = (CARACTERE*) malloc(sizeof(CARACTERE));
     caractere->ant = NULL;
     caractere->prox = NULL;
-    caractere->c = c;
+	caractere->utfChar = c;
     return caractere;
 }
 
@@ -37,6 +48,19 @@ int listaEstaVazia(LISTA *l){
         return 1;
     }
     return 0;
+}
+
+void inserirUtfByte(UTFCHAR *u, unsigned char c){
+	UTFBYTE *utfByte = criarUtfByte(c);
+	if(u->inicio == NULL){
+		u->inicio = utfByte;
+		return;
+	}
+	UTFBYTE *aux = u->inicio;
+	while(aux->prox != NULL){
+		aux = aux->prox;
+	}
+	aux->prox = utfByte;
 }
 
 void inserirLinhaInicio(LISTA *lista){
@@ -242,7 +266,7 @@ int cadeiaEstaVazia(CADEIA *cadeia){
 	return 0;
 }
 
-void inserirCaractereCadeiaInicio(CADEIA *cadeia, char c){
+void inserirCaractereCadeiaInicio(CADEIA *cadeia, UTFCHAR *c){
 	CARACTERE *caractere = criarCaractere(c);
 	cadeia->tamanho++;
 
@@ -257,7 +281,7 @@ void inserirCaractereCadeiaInicio(CADEIA *cadeia, char c){
 	cadeia->inicio = caractere;
 }
 
-void inserirCaractereCadeiaFim(CADEIA *cadeia, char c){
+void inserirCaractereCadeiaFim(CADEIA *cadeia, UTFCHAR *c){
 	CARACTERE *caractere = criarCaractere(c);
 	cadeia->tamanho++;
 
@@ -272,7 +296,7 @@ void inserirCaractereCadeiaFim(CADEIA *cadeia, char c){
 	cadeia->fim = caractere;
 }
 
-void inserirCaractereCadeiaPosicao(CADEIA *cadeia, char c, int pos){
+void inserirCaractereCadeiaPosicao(CADEIA *cadeia, UTFCHAR *c, int pos){
 	if(pos > cadeia->tamanho){
 		printf("Posição inválida\n");
 		return;
@@ -388,24 +412,6 @@ void removerCaractereCadeiaPosicao(CADEIA *cadeia, int pos){
 	}
 }
 
-void imprimirCadeia(CADEIA *cadeia){
-	CARACTERE *aux = cadeia->inicio;
-
-	while(aux != NULL){
-		printf("%c", aux->c);
-		aux = aux->prox;
-	}
-}
-
-void imprimirCadeiaInvertida(CADEIA *cadeia){
-	CARACTERE *aux = cadeia->fim;
-
-	while(aux != NULL){
-		printf("%c", aux->c);
-		aux = aux->ant;
-	}
-}
-
 void lerArquivoLista(char *nome, LISTA *lista){
 	FILE *file = fopen(nome, "r");
 
@@ -413,16 +419,26 @@ void lerArquivoLista(char *nome, LISTA *lista){
 
 	LINHA *aux = lista->inicio;
 
-	char c;
+	unsigned char caractere;
 	while(!feof(file)){
-		c = fgetc(file);
-		if(c == EOF)
+		caractere = fgetc(file);
+		if(caractere == EOF)
 			break;
-		if(c == '\n'){
+		if(caractere == '\n'){
 			inserirLinhaFim(lista);
 			aux = aux->prox;
 		}else{
-			inserirCaractereCadeiaFim(aux->cadeia, c);
+			UTFCHAR *caractereCompleto = (UTFCHAR*)malloc(sizeof(UTFCHAR));
+
+			inicializarUtfChar(caractereCompleto);
+
+			int nBytes = numberOfBytesInChar(caractere)-1;
+			for(int i=0;i < nBytes;i++) {
+				inserirUtfByte(caractereCompleto, caractere);
+				caractere = fgetc(file);
+			}
+			inserirUtfByte(caractereCompleto, caractere);
+			inserirCaractereCadeiaFim(aux->cadeia, caractereCompleto);
 		}
 	}
 	fclose(file);
@@ -436,7 +452,11 @@ void gravarListaArquivo(char *nome, LISTA *lista){
 	while(auxLinha != NULL){
 		CARACTERE *auxCadeia = auxLinha->cadeia->inicio;
 		while(auxCadeia != NULL){
-			fputc(auxCadeia->c, file);
+			UTFBYTE *auxByte = auxCadeia->utfChar->inicio;
+			while(auxByte != NULL){
+				fputc(auxByte->byte, file);
+				auxByte = auxByte->prox;
+			}
 			auxCadeia = auxCadeia->prox;
 		}
 		fputc('\n', file);
@@ -455,6 +475,8 @@ void getTerminalColumnsRows(int *columns, int *rows){
 }
 
 LINHA *escreverCadeiasTela(LINHA *inicio, int startLinha, int endLinha, int startColuna, int endColuna){
+	saveCursor();
+	gotoxy(1, startLinha);
 	LINHA *aux = inicio;
 	LINHA *ant = NULL;
 	int contLinhas = startLinha;
@@ -462,7 +484,11 @@ LINHA *escreverCadeiasTela(LINHA *inicio, int startLinha, int endLinha, int star
 		CARACTERE *auxCaractere = aux->cadeia->inicio;
 		int contColunas=startColuna;
 		while(auxCaractere != NULL && contColunas <= endColuna){
-			putchar(auxCaractere->c);
+			UTFBYTE *auxByte = auxCaractere->utfChar->inicio;
+			while(auxByte != NULL){
+				printf("%c", auxByte->byte);
+				auxByte = auxByte->prox;
+			}
 			contColunas++;
 			auxCaractere = auxCaractere->prox;
 		}
@@ -471,6 +497,7 @@ LINHA *escreverCadeiasTela(LINHA *inicio, int startLinha, int endLinha, int star
 		ant = aux;
 		aux = aux->prox;
 	}
+	loadCursor();
 	if(ant == NULL){
 		return inicio;
 	}
@@ -496,4 +523,29 @@ int getCursorRow(){
 	}
 		
 	return row;
+}
+
+int numberOfBytesInChar(unsigned char val){
+	if(val < 128){
+		return 1;
+	}else if(val < 224){
+		return 2;
+	}else if(val < 240){
+		return 3;
+	}else{
+		return 4;
+	}
+}
+
+LINHA *determinarFimBuffer(LINHA *inicio, int start, int end){
+	LINHA *ant = NULL;
+	LINHA *aux = inicio;
+	int cont = start;
+	while(aux != NULL && cont <= end){
+		cont++;
+		ant = aux;
+		aux = aux->prox;
+	}
+
+	return ant;
 }
