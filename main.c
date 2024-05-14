@@ -133,10 +133,13 @@ int main(){
 				clearTillEndLine();
 				cursorNextLine();
 				lineFeed();
-				inserirLinhaPosicao(lista, linhaAtual++);
+				desanexarParaNovaLinha(lista, colunaAtual,linhaAtual);
+				linhaAtual++;
+				colunaAtual=1;
 				atualBuffer = atualBuffer->prox;
+
+				escreverCadeiasTela(atualBuffer, getCursorRow(),  getCursorRow(), colunaAtual, maxColunas);
 				fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas);
-				//fimBuffer = escreverCadeiasTela(atualBuffer, getCursorRow(), maxLinhas, 1, maxColunas);
 				break;
 
 			default:

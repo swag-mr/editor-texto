@@ -46,7 +46,7 @@ typedef struct caractere{
 typedef struct cadeia{
     CARACTERE *inicio;
     CARACTERE *fim;
-	int tamanho;
+    int tamanho;
 }CADEIA;
 
 typedef struct linha{
@@ -84,6 +84,8 @@ void removerLinhaFim(LISTA *lista);
 void inserirCaractereCadeiaInicio(CADEIA *cadeia, UTFCHAR *c);
 void inserirCaractereCadeiaFim(CADEIA *cadeia, UTFCHAR *c);
 void inserirCaractereCadeiaPosicao(CADEIA *cadeia, UTFCHAR *c, int pos);
+
+void desanexarParaNovaLinha(LISTA *l, int posColuna, int posLinha);
 
 void removerCaractereCadeiaInicio(CADEIA *cadeia);
 void removerCaractereCadeiaFim(CADEIA *cadeia);
