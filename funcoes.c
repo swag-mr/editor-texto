@@ -101,6 +101,9 @@ void inserirLinhaPosicao(LISTA *lista, LINHA *linhaAtual){
 	linha->ant = linhaAtual;
 	linha->prox = linhaAtual->prox;
 	linhaAtual->prox = linha;
+	if(linhaAtual->prox != NULL){
+		linhaAtual->prox->ant = linha;
+	}
 }
 
 void removerLinhaInicio(LISTA *lista){
