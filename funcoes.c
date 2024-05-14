@@ -3,7 +3,7 @@
 #include <stdlib.h>
 
 void inicializarUtfChar(UTFCHAR *u){
-	u->inicio = NULL;
+    u->inicio = NULL;
 }
 
 void inicializarCadeia(CADEIA *c){
@@ -19,17 +19,17 @@ void inicializarLista(LISTA *l){
 }
 
 UTFBYTE *criarUtfByte(unsigned char c){
-	UTFBYTE *utfByte = (UTFBYTE*)malloc(sizeof(UTFBYTE));
-	utfByte->byte = c;
-	utfByte->prox = NULL;
-	return utfByte;
+    UTFBYTE *utfByte = (UTFBYTE*)malloc(sizeof(UTFBYTE));
+    utfByte->byte = c;
+    utfByte->prox = NULL;
+    return utfByte;
 }
 
 CARACTERE* criarCaractere(UTFCHAR *c){
     CARACTERE *caractere = (CARACTERE*) malloc(sizeof(CARACTERE));
     caractere->ant = NULL;
     caractere->prox = NULL;
-	caractere->utfChar = c;
+    caractere->utfChar = c;
     return caractere;
 }
 
@@ -39,57 +39,57 @@ LINHA* criarLinha(){
     linha->ant = NULL;
     linha->prox = NULL;
 
-	inicializarCadeia(linha->cadeia);
+    inicializarCadeia(linha->cadeia);
     return linha;
 }
 
 int listaEstaVazia(LISTA *l){
     if(l->inicio == NULL || l->fim == NULL){
-        return 1;
+	return 1;
     }
     return 0;
 }
 
 void inserirUtfByte(UTFCHAR *u, unsigned char c){
-	UTFBYTE *utfByte = criarUtfByte(c);
-	if(u->inicio == NULL){
-		u->inicio = utfByte;
-		return;
-	}
-	UTFBYTE *aux = u->inicio;
-	while(aux->prox != NULL){
-		aux = aux->prox;
-	}
-	aux->prox = utfByte;
+    UTFBYTE *utfByte = criarUtfByte(c);
+    if(u->inicio == NULL){
+	u->inicio = utfByte;
+	return;
+    }
+    UTFBYTE *aux = u->inicio;
+    while(aux->prox != NULL){
+	aux = aux->prox;
+    }
+    aux->prox = utfByte;
 }
 
 void inserirLinhaInicio(LISTA *lista){
     LINHA *linha;
     linha = criarLinha();
-	lista->tamanho++;
+    lista->tamanho++;
 
     if(listaEstaVazia(lista)){
-        lista->inicio = linha;
-        lista->fim = linha;
+	lista->inicio = linha;
+	lista->fim = linha;
     }else{
-        linha->prox = lista->inicio;
-        lista->inicio->ant = linha;
-        lista->inicio = linha;
+	linha->prox = lista->inicio;
+	lista->inicio->ant = linha;
+	lista->inicio = linha;
     }
 }
 
 void inserirLinhaFim(LISTA *lista){
     LINHA *linha;
     linha = criarLinha();
-	lista->tamanho++;
+    lista->tamanho++;
 
     if(listaEstaVazia(lista)){
-        lista->inicio = linha;
-        lista->fim = linha;
+	lista->inicio = linha;
+	lista->fim = linha;
     }else{
-        lista->fim->prox = linha;
-        linha->ant = lista->fim;
-        lista->fim = linha;
+	lista->fim->prox = linha;
+	linha->ant = lista->fim;
+	lista->fim = linha;
     }
 }
 
@@ -105,288 +105,288 @@ void inserirLinhaPosicao(LISTA *lista, LINHA *linhaAtual){
 
 void removerLinhaInicio(LISTA *lista){
     if(listaEstaVazia(lista)){
-        printf("Lista vazia, impossivel remover!");
-        return;
+	printf("Lista vazia, impossivel remover!");
+	return;
     }else{
-        LINHA *linhaAux = NULL;
-        linhaAux = lista->inicio;
+	LINHA *linhaAux = NULL;
+	linhaAux = lista->inicio;
 
-        lista->inicio = lista->inicio->prox;
-		lista->tamanho--;
-        free(linhaAux);
+	lista->inicio = lista->inicio->prox;
+	lista->tamanho--;
+	free(linhaAux);
 
-        if(lista->inicio == NULL){
-            lista->fim = lista->inicio;
-			return;
-        }
-        lista->inicio->ant = NULL;
+	if(lista->inicio == NULL){
+	    lista->fim = lista->inicio;
+	    return;
+	}
+	lista->inicio->ant = NULL;
     }
 }
 
 void removerLinhaFim(LISTA *lista){
     if(listaEstaVazia(lista)){
-        printf("Lista vazia, impossivel remover!");
-        return;
+	printf("Lista vazia, impossivel remover!");
+	return;
     }else{
-        LINHA *linhaAux = NULL;
-        linhaAux = lista->fim;
+	LINHA *linhaAux = NULL;
+	linhaAux = lista->fim;
 
-        lista->fim = lista->fim->ant;
-		lista->tamanho--;
-        free(linhaAux);
+	lista->fim = lista->fim->ant;
+	lista->tamanho--;
+	free(linhaAux);
 
-        if(lista->fim == NULL){
-            lista->inicio = lista->fim;
-			return;
-        }
+	if(lista->fim == NULL){
+	    lista->inicio = lista->fim;
+	    return;
+	}
 
-        lista->fim->prox = NULL;
+	lista->fim->prox = NULL;
     }
 }
 
 void removerLinhaPosicao(LISTA *lista, int pos){
-	if(pos == 0){
-		// Remover Inicio
-		removerLinhaInicio(lista);
-		return;
-	}
+    if(pos == 0){
+	// Remover Inicio
+	removerLinhaInicio(lista);
+	return;
+    }
 
-	if(pos == lista->tamanho-1){
-		// Remover Final
-		removerLinhaFim(lista);
-		return;
-	}
+    if(pos == lista->tamanho-1){
+	// Remover Final
+	removerLinhaFim(lista);
+	return;
+    }
 
-	if(listaEstaVazia(lista)){
-		printf("Lista vazia, impossivel remover!");
-		return;
-	}else{
-		if(pos <= lista->tamanho/2){
-			// Comeca a buscar do inicio
-			LINHA *linhaAnterior = NULL;
-			LINHA *linhaAtual;
-			linhaAtual = lista->inicio;
-			int i=0;
+    if(listaEstaVazia(lista)){
+	printf("Lista vazia, impossivel remover!");
+	return;
+    }else{
+	if(pos <= lista->tamanho/2){
+	    // Comeca a buscar do inicio
+	    LINHA *linhaAnterior = NULL;
+	    LINHA *linhaAtual;
+	    linhaAtual = lista->inicio;
+	    int i=0;
 
-			while(linhaAtual != NULL){
-				if(i == pos){
-					// Remover Meio
-					linhaAnterior->prox = linhaAtual->prox;
-					linhaAtual->prox->ant = linhaAnterior;
-					lista->tamanho--;
-					free(linhaAtual);
-					return;
-				}
-				i++;
-				linhaAnterior = linhaAtual;
-				linhaAtual = linhaAtual->prox;
-			}
-		}else{
-			// Comeca a buscar do final
-			LINHA *linhaProx = NULL;
-			LINHA *linhaAtual;
-			linhaAtual = lista->fim;
-			int i=0;
-
-			while(linhaAtual != NULL){
-				if(i == pos){
-					// Remover Meio
-					linhaProx->ant = linhaAtual->ant;
-					linhaAtual->ant->prox = linhaProx;
-					lista->tamanho--;
-					free(linhaAtual);
-					return;
-				}
-				i++;
-				linhaProx = linhaAtual;
-				linhaAtual = linhaAtual->ant;
-			}
+	    while(linhaAtual != NULL){
+		if(i == pos){
+		    // Remover Meio
+		    linhaAnterior->prox = linhaAtual->prox;
+		    linhaAtual->prox->ant = linhaAnterior;
+		    lista->tamanho--;
+		    free(linhaAtual);
+		    return;
 		}
+		i++;
+		linhaAnterior = linhaAtual;
+		linhaAtual = linhaAtual->prox;
+	    }
+	}else{
+	    // Comeca a buscar do final
+	    LINHA *linhaProx = NULL;
+	    LINHA *linhaAtual;
+	    linhaAtual = lista->fim;
+	    int i=0;
+
+	    while(linhaAtual != NULL){
+		if(i == pos){
+		    // Remover Meio
+		    linhaProx->ant = linhaAtual->ant;
+		    linhaAtual->ant->prox = linhaProx;
+		    lista->tamanho--;
+		    free(linhaAtual);
+		    return;
+		}
+		i++;
+		linhaProx = linhaAtual;
+		linhaAtual = linhaAtual->ant;
+	    }
 	}
+    }
 }
 
 int cadeiaEstaVazia(CADEIA *cadeia){
-	if(cadeia->inicio == NULL || cadeia->fim == NULL)
-		return 1;
-	return 0;
+    if(cadeia->inicio == NULL || cadeia->fim == NULL)
+    return 1;
+    return 0;
 }
 
 void inserirCaractereCadeiaInicio(CADEIA *cadeia, UTFCHAR *c){
-	CARACTERE *caractere = criarCaractere(c);
-	cadeia->tamanho++;
+    CARACTERE *caractere = criarCaractere(c);
+    cadeia->tamanho++;
 
-	if(cadeiaEstaVazia(cadeia)){
-		cadeia->inicio = caractere;
-		cadeia->fim = caractere;
-		return;
-	}
-
-	caractere->prox = cadeia->inicio;
-	cadeia->inicio->ant = caractere;
+    if(cadeiaEstaVazia(cadeia)){
 	cadeia->inicio = caractere;
+	cadeia->fim = caractere;
+	return;
+    }
+
+    caractere->prox = cadeia->inicio;
+    cadeia->inicio->ant = caractere;
+    cadeia->inicio = caractere;
 }
 
 void inserirCaractereCadeiaFim(CADEIA *cadeia, UTFCHAR *c){
-	CARACTERE *caractere = criarCaractere(c);
-	cadeia->tamanho++;
+    CARACTERE *caractere = criarCaractere(c);
+    cadeia->tamanho++;
 
-	if(cadeiaEstaVazia(cadeia)){
-		cadeia->inicio = caractere;
-		cadeia->fim = caractere;
-		return;
-	}
-
-	caractere->ant = cadeia->fim;
-	cadeia->fim->prox = caractere;
+    if(cadeiaEstaVazia(cadeia)){
+	cadeia->inicio = caractere;
 	cadeia->fim = caractere;
+	return;
+    }
+
+    caractere->ant = cadeia->fim;
+    cadeia->fim->prox = caractere;
+    cadeia->fim = caractere;
 }
 
 void inserirCaractereCadeiaPosicao(CADEIA *cadeia, UTFCHAR *c, int pos){
-	if(pos > cadeia->tamanho){
-		printf("Posição inválida\n");
-		return;
-	}
+    if(pos > cadeia->tamanho){
+	printf("Posição inválida\n");
+	return;
+    }
 
-	CARACTERE *caractere = criarCaractere(c);
-	cadeia->tamanho++;
+    CARACTERE *caractere = criarCaractere(c);
+    cadeia->tamanho++;
 
-	if(cadeiaEstaVazia(cadeia)){
-		cadeia->inicio = caractere;
-		cadeia->fim = caractere;
-		return;
-	}
+    if(cadeiaEstaVazia(cadeia)){
+	cadeia->inicio = caractere;
+	cadeia->fim = caractere;
+	return;
+    }
 
-	CARACTERE *aux = cadeia->inicio;
-	CARACTERE *ant = NULL;
-	int cont = 0;
-	while(aux != NULL && cont < pos){
-		cont++;
-		ant = aux;
-		aux = aux->prox;
-	}
+    CARACTERE *aux = cadeia->inicio;
+    CARACTERE *ant = NULL;
+    int cont = 0;
+    while(aux != NULL && cont < pos){
+	cont++;
+	ant = aux;
+	aux = aux->prox;
+    }
 
-	if(ant == NULL){
-		caractere->prox = cadeia->inicio;
-		cadeia->inicio->ant = caractere;
-		cadeia->inicio = caractere;
-		return;
-	}
+    if(ant == NULL){
+	caractere->prox = cadeia->inicio;
+	cadeia->inicio->ant = caractere;
+	cadeia->inicio = caractere;
+	return;
+    }
 
-	caractere->ant = ant;
-	ant->prox = caractere;
-	caractere->prox = aux;
-	aux->ant = caractere;
+    caractere->ant = ant;
+    ant->prox = caractere;
+    caractere->prox = aux;
+    aux->ant = caractere;
 }
 
 void removerCaractereCadeiaInicio(CADEIA *cadeia){
-	if(cadeiaEstaVazia(cadeia)){
-		printf("Cadeia vazia, impossível remover caractere\n");
-		return;
-	}
+    if(cadeiaEstaVazia(cadeia)){
+	printf("Cadeia vazia, impossível remover caractere\n");
+	return;
+    }
 
-	CARACTERE *aux = cadeia->inicio;
-	cadeia->inicio = aux->prox;
-	cadeia->tamanho--;
+    CARACTERE *aux = cadeia->inicio;
+    cadeia->inicio = aux->prox;
+    cadeia->tamanho--;
 
-	free(aux);
-	if(cadeiaEstaVazia(cadeia)){
-		cadeia->fim = NULL;
-		return;
-	}
+    free(aux);
+    if(cadeiaEstaVazia(cadeia)){
+	cadeia->fim = NULL;
+	return;
+    }
 
-	cadeia->inicio->ant = NULL;
+    cadeia->inicio->ant = NULL;
 }
 
 void removerCaractereCadeiaFim(CADEIA *cadeia){
-	if(cadeiaEstaVazia(cadeia)){
-		printf("Cadeia vazia, impossível remover caractere\n");
-		return;
-	}
+    if(cadeiaEstaVazia(cadeia)){
+	printf("Cadeia vazia, impossível remover caractere\n");
+	return;
+    }
 
-	CARACTERE *aux = cadeia->fim;
-	cadeia->fim = aux->ant;
-	cadeia->tamanho--;
-	free(aux);
+    CARACTERE *aux = cadeia->fim;
+    cadeia->fim = aux->ant;
+    cadeia->tamanho--;
+    free(aux);
 
-	if(cadeiaEstaVazia(cadeia)){
-		cadeia->inicio = NULL;
-	}
-	cadeia->fim->prox = NULL;
+    if(cadeiaEstaVazia(cadeia)){
+	cadeia->inicio = NULL;
+    }
+    cadeia->fim->prox = NULL;
 }
 void removerCaractereCadeiaPosicao(CADEIA *cadeia, int pos){
-	if(pos > cadeia->tamanho){
-		printf("Posição inválida\n");
-		return;
-	}
+    if(pos > cadeia->tamanho){
+	printf("Posição inválida\n");
+	return;
+    }
 
-	if(pos == 1){
-		removerCaractereCadeiaInicio(cadeia);
-		return;
-	}
+    if(pos == 1){
+	removerCaractereCadeiaInicio(cadeia);
+	return;
+    }
 
-	if(pos == cadeia->tamanho){
-		removerCaractereCadeiaFim(cadeia);
-		return;
-	}
+    if(pos == cadeia->tamanho){
+	removerCaractereCadeiaFim(cadeia);
+	return;
+    }
 
-	if(cadeiaEstaVazia(cadeia)){
-		printf("Cadeia vazia, impossível remover caractere\n");
-		return;
-	}
+    if(cadeiaEstaVazia(cadeia)){
+	printf("Cadeia vazia, impossível remover caractere\n");
+	return;
+    }
 
-	CARACTERE *aux = cadeia->inicio;
-	CARACTERE *ant = NULL;
-	cadeia->tamanho--;
+    CARACTERE *aux = cadeia->inicio;
+    CARACTERE *ant = NULL;
+    cadeia->tamanho--;
 
-	int cont = 0;
+    int cont = 0;
 
-	while(aux != NULL && cont < pos-1){
-		cont++;
-		ant = aux;
-		aux = aux->prox;
-	}
+    while(aux != NULL && cont < pos-1){
+	cont++;
+	ant = aux;
+	aux = aux->prox;
+    }
 
-	ant->prox = aux->prox;
-	aux->prox->ant = ant;
+    ant->prox = aux->prox;
+    aux->prox->ant = ant;
 
-	free(aux);
+    free(aux);
 
-	if(cadeiaEstaVazia(cadeia)){
-		cadeia->fim = NULL;
-		cadeia->inicio = NULL;
-	}
+    if(cadeiaEstaVazia(cadeia)){
+	cadeia->fim = NULL;
+	cadeia->inicio = NULL;
+    }
 }
 
 void lerArquivoLista(char *nome, LISTA *lista){
-	FILE *file = fopen(nome, "r");
+    FILE *file = fopen(nome, "r");
 
+    inserirLinhaFim(lista);
+
+    LINHA *aux = lista->inicio;
+
+    unsigned char caractere;
+    while(!feof(file)){
+	caractere = fgetc(file);
+	if(caractere == EOF)
+	break;
+	if(caractere == '\n'){
 	inserirLinhaFim(lista);
+	    aux = aux->prox;
+	}else{
+	    UTFCHAR *caractereCompleto = (UTFCHAR*)malloc(sizeof(UTFCHAR));
 
-	LINHA *aux = lista->inicio;
+	    inicializarUtfChar(caractereCompleto);
 
-	unsigned char caractere;
-	while(!feof(file)){
+	    int nBytes = numberOfBytesInChar(caractere)-1;
+	    for(int i=0;i < nBytes;i++) {
+		inserirUtfByte(caractereCompleto, caractere);
 		caractere = fgetc(file);
-		if(caractere == EOF)
-			break;
-		if(caractere == '\n'){
-			inserirLinhaFim(lista);
-			aux = aux->prox;
-		}else{
-			UTFCHAR *caractereCompleto = (UTFCHAR*)malloc(sizeof(UTFCHAR));
-
-			inicializarUtfChar(caractereCompleto);
-
-			int nBytes = numberOfBytesInChar(caractere)-1;
-			for(int i=0;i < nBytes;i++) {
-				inserirUtfByte(caractereCompleto, caractere);
-				caractere = fgetc(file);
-			}
-			inserirUtfByte(caractereCompleto, caractere);
-			inserirCaractereCadeiaFim(aux->cadeia, caractereCompleto);
-		}
+	    }
+	    inserirUtfByte(caractereCompleto, caractere);
+	    inserirCaractereCadeiaFim(aux->cadeia, caractereCompleto);
 	}
-	fclose(file);
+    }
+    fclose(file);
 
 	removerLinhaFim(lista);
 }
@@ -413,7 +413,7 @@ void gravarListaArquivo(char *nome, LISTA *lista){
 
 void getTerminalColumnsRows(int *columns, int *rows){
     CONSOLE_SCREEN_BUFFER_INFO csbi;
-
+  
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     *columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
     *rows = csbi.srWindow.Bottom - csbi.srWindow.Top + 1;
@@ -466,7 +466,7 @@ int getCursorRow(){
 	while(c != 'R'){
 		c = getch();
 	}
-
+		
 	return row;
 }
 
@@ -493,4 +493,28 @@ LINHA *determinarFimBuffer(LINHA *inicio, int start, int end){
 	}
 
 	return ant;
+}
+
+void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna){
+    inserirLinhaPosicao(lista, linha);
+
+    LINHA *novaLinha = linha->prox;
+    CARACTERE *c = linha->cadeia->inicio;
+
+    int cont = 1;
+    while(c != NULL && cont < posColuna){
+	c = c->prox;
+	cont++;
+    }
+
+    if(c != NULL){
+	if(c->ant != NULL){
+	    c->ant->prox = NULL;
+	}else{
+	    linha->cadeia->inicio = NULL;
+	}
+	c->ant = NULL;
+    }
+
+    novaLinha->cadeia->inicio = c;
 }
