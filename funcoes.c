@@ -495,22 +495,21 @@ LINHA *determinarFimBuffer(LINHA *inicio, int start, int end){
 	return ant;
 }
 
-void desanexarParaNovaLinha(LISTA *l, int posColuna, int posLinha){
-    inserirLinhaPosicao(l, posLinha);
+void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna){
+    inserirLinhaPosicao(lista, linha);
 
-    LINHA *novaLinha = l->inicio;
-    int cont=1;
-    while(novaLinha != NULL && cont < posLinha+1){
-	cont++;
-	novaLinha = novaLinha->prox;
-    }
-    LINHA *antLinha =  novaLinha->ant;
-    CARACTERE *c = antLinha->cadeia->inicio;
+    LINHA *novaLinha = linha->prox;
+    CARACTERE *c = linha->cadeia->inicio;
 
     for(int i=1; i < posColuna; i++){
 	c = c->prox;
     }
-    c->ant->prox = NULL;
+    if(c->ant != NULL){
+	c->ant->prox = NULL;
+    }else{
+	linha->cadeia->inicio = NULL;
+    }
+
     c->ant = NULL;
     novaLinha->cadeia->inicio = c;
 }

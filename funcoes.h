@@ -76,7 +76,7 @@ void inserirUtfByte(UTFCHAR *u, unsigned char c);
 
 void inserirLinhaFim(LISTA *lista);
 void inserirLinhaInicio(LISTA *lista);
-void inserirLinhaPosicao(LISTA *lista, int pos);
+void inserirLinhaPosicao(LISTA *lista, LINHA *linhaAtual);
 
 void removerLinhaInicio(LISTA *lista);
 void removerLinhaFim(LISTA *lista);
@@ -85,7 +85,7 @@ void inserirCaractereCadeiaInicio(CADEIA *cadeia, UTFCHAR *c);
 void inserirCaractereCadeiaFim(CADEIA *cadeia, UTFCHAR *c);
 void inserirCaractereCadeiaPosicao(CADEIA *cadeia, UTFCHAR *c, int pos);
 
-void desanexarParaNovaLinha(LISTA *l, int posColuna, int posLinha);
+void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna);
 
 void removerCaractereCadeiaInicio(CADEIA *cadeia);
 void removerCaractereCadeiaFim(CADEIA *cadeia);

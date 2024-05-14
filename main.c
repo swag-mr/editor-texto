@@ -133,7 +133,7 @@ int main(){
 				clearTillEndLine();
 				cursorNextLine();
 				lineFeed();
-				desanexarParaNovaLinha(lista, colunaAtual,linhaAtual);
+				desanexarParaNovaLinha(lista, atualBuffer, colunaAtual);
 				linhaAtual++;
 				colunaAtual=1;
 				atualBuffer = atualBuffer->prox;
