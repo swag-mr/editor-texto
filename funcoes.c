@@ -501,15 +501,20 @@ void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna){
     LINHA *novaLinha = linha->prox;
     CARACTERE *c = linha->cadeia->inicio;
 
-    for(int i=1; i < posColuna; i++){
+    int cont = 1;
+    while(c != NULL && cont < posColuna){
 	c = c->prox;
-    }
-    if(c->ant != NULL){
-	c->ant->prox = NULL;
-    }else{
-	linha->cadeia->inicio = NULL;
+	cont++;
     }
 
-    c->ant = NULL;
+    if(c != NULL){
+	if(c->ant != NULL){
+	    c->ant->prox = NULL;
+	}else{
+	    linha->cadeia->inicio = NULL;
+	}
+	c->ant = NULL;
+    }
+
     novaLinha->cadeia->inicio = c;
 }
