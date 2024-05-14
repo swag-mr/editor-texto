@@ -100,10 +100,10 @@ void inserirLinhaPosicao(LISTA *lista, LINHA *linhaAtual){
 
 	linha->ant = linhaAtual;
 	linha->prox = linhaAtual->prox;
-	linhaAtual->prox = linha;
 	if(linhaAtual->prox != NULL){
 		linhaAtual->prox->ant = linha;
 	}
+	linhaAtual->prox = linha;
 }
 
 void removerLinhaInicio(LISTA *lista){
@@ -494,8 +494,8 @@ void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna){
 	LINHA *novaLinha = linha->prox;
 	CARACTERE *c = linha->cadeia->inicio;
 
-	int cont = 1;
-	while(c != NULL && cont < posColuna){
+	int cont = 0;
+	while(c != NULL && cont < posColuna-1){
 		c = c->prox;
 		cont++;
 	}
@@ -510,4 +510,7 @@ void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna){
 	}
 
 	novaLinha->cadeia->inicio = c;
+
+	novaLinha->cadeia->tamanho = linha->cadeia->tamanho - cont;
+	linha->cadeia->tamanho = cont;
 }
