@@ -1,7 +1,14 @@
 Hey, hey, hey nego
+<<<<<<< Updated upstream
 Você está na sintonia da sua Rádio Êxodos
 Eu, DJ Nel, com
 andando o melhor da Black Music
+=======
+"Tanto bate até que fura"
+
+Você está na sintonia da sua Rádio Êxodos
+Eu, DJ Nel, comandando o melhor da Black Music
+>>>>>>> Stashed changes
 São 23 minutos de um novo dia
 O Japonês do Jardim Rosana manda um salve para o Zezé
 Pro Chiquinho, pro Kau, pro Ribeiro, pro Tisso, Zulu, e o Serginho
