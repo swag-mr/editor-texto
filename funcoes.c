@@ -93,69 +93,14 @@ void inserirLinhaFim(LISTA *lista){
     }
 }
 
-void inserirLinhaPosicao(LISTA *lista, int pos){
-    if(pos == 0){
-	// Inserir Inicio
-	inserirLinhaInicio(lista);
-	return;
-    }
+void inserirLinhaPosicao(LISTA *lista, LINHA *linhaAtual){
+	LINHA *linha;
+	linha = criarLinha();
+	lista->tamanho++;
 
-    if(pos == lista->tamanho){
-	// Inserir Final
-	inserirLinhaFim(lista);
-	return;
-    }
-
-    LINHA *linha;
-    linha = criarLinha();
-    lista->tamanho++;
-
-    if(listaEstaVazia(lista)){
-	lista->inicio = linha;
-	lista->fim = linha;
-    }else{
-	if(pos <= lista->tamanho/2){
-	    // Comeca a buscar do inicio
-	    LINHA *linhaAnterior = NULL;
-	    LINHA *linhaAtual;
-	    linhaAtual = lista->inicio;
-	    int i=0;
-
-	    while(linhaAtual != NULL){
-		if(i == pos){
-		    // Inserir Meio
-		    linhaAtual->ant = linha;
-		    linha->prox = linhaAtual;
-		    linha->ant = linhaAnterior;
-		    linhaAnterior->prox = linha;
-		    return;
-		}
-		i++;
-		linhaAnterior = linhaAtual;
-		linhaAtual = linhaAtual->prox;
-	    }
-	}else{
-	    // Comeca a buscar do final
-	    LINHA *linhaProx = NULL;
-	    LINHA *linhaAtual;
-	    linhaAtual = lista->fim;
-	    int i=lista->tamanho;
-
-	    while(linhaAtual != NULL){
-		if(i == pos){
-		    // Inserir Meio
-		    linhaAtual->prox = linha;
-		    linhaProx->ant = linha;
-		    linha->prox = linhaProx;
-		    linha->ant = linhaAtual;
-		    return;
-		}
-		i--;
-		linhaProx = linhaAtual;
-		linhaAtual = linhaAtual->ant;
-	    }
-	}
-    }
+	linha->ant = linhaAtual;
+	linha->prox = linhaAtual->prox;
+	linhaAtual->prox = linha;
 }
 
 void removerLinhaInicio(LISTA *lista){
