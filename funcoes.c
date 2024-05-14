@@ -249,7 +249,7 @@ void inserirCaractereCadeiaPosicao(CADEIA *cadeia, UTFCHAR *c, int pos){
 		inserirCaractereCadeiaInicio(cadeia, c);
 		return;
 	}
-	if(pos == cadeia->tamanho){
+	if(pos >= cadeia->tamanho){
 		inserirCaractereCadeiaFim(cadeia, c);
 		return;
 	}
