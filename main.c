@@ -131,24 +131,43 @@ int main(){
 
 			case ENTER:
 				clearTillEndLine();
+
+				if(atualBuffer == fimBuffer && getCursorRow() == maxLinhas){
+					scrollDown();
+					inicioBuffer=inicioBuffer->prox;
+				}
+
 				cursorNextLine();
 				lineFeed();
 				desanexarParaNovaLinha(lista, atualBuffer, colunaAtual);
 				linhaAtual++;
 				colunaAtual=1;
+
 				atualBuffer = atualBuffer->prox;
 
 				escreverCadeiasTela(atualBuffer, getCursorRow(),  getCursorRow(), colunaAtual, maxColunas);
 				fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas);
 				break;
+			
+			case '0':
+			break;
 
 			default:
 				inserirChar();
+
+				UTFCHAR *novoCaractere = (UTFCHAR*)malloc(sizeof(UTFCHAR));
+				inicializarUtfChar(novoCaractere);
+
 				for (int i = 0; i < numberOfBytesInChar((unsigned char)entrada) - 1; i++) {
+					inserirUtfByte(novoCaractere, (unsigned char)entrada);
 					printf("%c", entrada);
 					entrada = getch();
 				}
+				inserirUtfByte(novoCaractere, entrada);
 				printf("%c", entrada);
+
+				inserirCaractereCadeiaPosicao(atualBuffer->cadeia, novoCaractere, colunaAtual-1);
+				colunaAtual++;
 				break;
 		}
 	}while(entrada != '0');
