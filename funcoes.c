@@ -245,61 +245,29 @@ void inserirCaractereCadeiaFim(CADEIA *cadeia, UTFCHAR *c){
 }
 
 void inserirCaractereCadeiaPosicao(CADEIA *cadeia, UTFCHAR *c, int pos){
-<<<<<<< Updated upstream
-	if(pos > cadeia->tamanho){
-		printf("Posição inválida\n");
-=======
 	if(pos == 0){
 		inserirCaractereCadeiaInicio(cadeia, c);
 		return;
 	}
 	if(pos == cadeia->tamanho){
 		inserirCaractereCadeiaFim(cadeia, c);
->>>>>>> Stashed changes
 		return;
 	}
 
+	CARACTERE *aux = cadeia->inicio;
 	CARACTERE *caractere = criarCaractere(c);
 	cadeia->tamanho++;
 
-<<<<<<< Updated upstream
-	if(cadeiaEstaVazia(cadeia)){
-		cadeia->inicio = caractere;
-		cadeia->fim = caractere;
-		return;
-	}
-
-	CARACTERE *aux = cadeia->inicio;
-	CARACTERE *ant = NULL;
-	int cont = 0;
-	while(aux != NULL && cont < pos){
-		cont++;
-		ant = aux;
-		aux = aux->prox;
-	}
-
-	if(ant == NULL){
-		caractere->prox = cadeia->inicio;
-		cadeia->inicio->ant = caractere;
-		cadeia->inicio = caractere;
-		return;
-	}
-
-	caractere->ant = ant;
-	ant->prox = caractere;
-	caractere->prox = aux;
-=======
-	CARACTERE *aux = cadeia->inicio;
 	int cont=1;
 	while(aux != NULL && cont < pos){
 		cont++;
 		aux = aux->prox;
 	}
+
 	CARACTERE *ant = aux->ant;
 	ant->prox = caractere;
 	caractere->prox = aux;
 	caractere->ant = ant;
->>>>>>> Stashed changes
 	aux->ant = caractere;
 }
 
