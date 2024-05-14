@@ -42,7 +42,7 @@ int main(){
 		}
 	}while(opc > 3 || opc < 1);*/
 
-	lerArquivoLista("./arquivos/texto.txt", lista);
+	lerArquivoLista("./arquivos/musica.txt", lista);
 	clear();
 
 	int entrada;
@@ -52,7 +52,7 @@ int main(){
 
 	LINHA *inicioBuffer = lista->inicio;
 	LINHA *atualBuffer = inicioBuffer;
-	
+
 	// Imprimir a tela ate os limites do terminal e armazenar a última linha percorrida
 	LINHA *fimBuffer = escreverCadeiasTela(lista->inicio, 1, maxLinhas, 1, maxColunas);
 
@@ -133,7 +133,7 @@ int main(){
 				clearTillEndLine();
 				cursorNextLine();
 				lineFeed();
-				inserirLinhaPosicao(lista, linhaAtual++);
+				inserirLinhaPosicao(lista, atualBuffer);
 				atualBuffer = atualBuffer->prox;
 				fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas);
 				//fimBuffer = escreverCadeiasTela(atualBuffer, getCursorRow(), maxLinhas, 1, maxColunas);

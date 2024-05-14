@@ -76,7 +76,7 @@ void inserirUtfByte(UTFCHAR *u, unsigned char c);
 
 void inserirLinhaFim(LISTA *lista);
 void inserirLinhaInicio(LISTA *lista);
-void inserirLinhaPosicao(LISTA *lista, int pos);
+void inserirLinhaPosicao(LISTA *lista, LINHA *linhaAtual);
 
 void removerLinhaInicio(LISTA *lista);
 void removerLinhaFim(LISTA *lista);
