@@ -28,6 +28,7 @@
 #define gotoxy(x,y) printf("\033[%d;%dH", (y), (x))
 #define cursorPosition() printf("\033[6n")
 #define lineFeed() printf("\033[1L");
+#define deleteLine() printf("\033[1M");
 #define inserirChar() printf("\033[1@");
 #define removerChar() printf("\033[1P");
 

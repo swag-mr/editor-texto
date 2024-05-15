@@ -515,9 +515,3 @@ void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna){
 	novaLinha->cadeia->tamanho = linha->cadeia->tamanho - cont;
 	linha->cadeia->tamanho = cont;
 }
-
-void apagarChar(LISTA *lista, LINHA *linha){
-	if(!cadeiaEstaVazia(linha->cadeia)){
-
-	}
-}

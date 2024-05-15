@@ -161,29 +161,41 @@ int main(){
 
 		switch(entrada){
 			case BACKSPACE:
-				if(atualBuffer->cadeia != NULL){
+				if(!cadeiaEstaVazia(atualBuffer->cadeia)){
 					if(colunaAtual != 1){
 						cursorLeft();
 						removerChar();
 						removerCaractereCadeiaPosicao(atualBuffer->cadeia, --colunaAtual);
 					}else{
 						if(atualBuffer->ant != NULL){
-							int tamanhoNovo;
-
 							atualBuffer = atualBuffer->ant;
-							if(atualBuffer->cadeia->fim != NULL){
-								atualBuffer->cadeia->fim->prox = atualBuffer->prox->cadeia->inicio;
-								tamanhoNovo = atualBuffer->cadeia->tamanho + atualBuffer->prox->cadeia->tamanho;
-							}else{
-								atualBuffer->cadeia = atualBuffer->prox->cadeia;
-								tamanhoNovo = atualBuffer->prox->cadeia->tamanho;
+							if(!cadeiaEstaVazia(atualBuffer->prox->cadeia)){
+								int tamanhoNovo;
+
+								if(atualBuffer->cadeia->fim != NULL){
+									atualBuffer->cadeia->fim->prox = atualBuffer->prox->cadeia->inicio;
+									atualBuffer->cadeia->fim = atualBuffer->prox->cadeia->fim;
+									tamanhoNovo = atualBuffer->cadeia->tamanho + atualBuffer->prox->cadeia->tamanho;
+									colunaAtual = atualBuffer->cadeia->tamanho + 1;
+								}else{
+									atualBuffer->cadeia = atualBuffer->prox->cadeia;
+									tamanhoNovo = atualBuffer->cadeia->tamanho;
+									colunaAtual = 1;
+								}
+
+								atualBuffer->cadeia->tamanho = tamanhoNovo;
 							}
 
-							removerLinhaAtual(lista, atualBuffer->prox);
 
-							colunaAtual = atualBuffer->cadeia->tamanho + 1;
-							gotoxy(atualBuffer->cadeia->tamanho+1, --linhaAtual);
-							atualBuffer->cadeia->tamanho = tamanhoNovo;
+							deleteLine();
+							removerLinhaAtual(lista, atualBuffer->prox);
+							fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow()-1, maxLinhas); 
+
+							gotoxy(colunaAtual, --linhaAtual);
+
+							escreverCadeiasTela(atualBuffer, getCursorRow(), getCursorRow(), 1, maxColunas);
+							escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
+							
 						}
 					}
 				}
@@ -213,7 +225,7 @@ int main(){
 			break;
 
 			case CTRL_S:
-				gravarListaArquivo("./arquivos/texto.txt", lista);
+				gravarListaArquivo("./arquivos/novo.txt", lista);
 				break;
 
 			default:
