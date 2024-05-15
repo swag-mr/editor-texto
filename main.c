@@ -42,7 +42,7 @@ int main(){
 		}
 	}while(opc > 3 || opc < 1);*/
 
-	lerArquivoLista("./arquivos/texto.txt", lista);
+	lerArquivoLista("./arquivos/novo.txt", lista);
 	clear();
 
 	int entrada;
@@ -182,10 +182,9 @@ int main(){
 									tamanhoNovo = atualBuffer->cadeia->tamanho;
 									colunaAtual = 1;
 								}
-
+								
 								atualBuffer->cadeia->tamanho = tamanhoNovo;
 							}
-
 
 							deleteLine();
 							removerLinhaAtual(lista, atualBuffer->prox);
@@ -197,6 +196,20 @@ int main(){
 							escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
 							
 						}
+					}
+				}else{
+					if(atualBuffer->ant != NULL){
+						atualBuffer = atualBuffer->ant;
+						colunaAtual = atualBuffer->cadeia->tamanho + 1;
+						
+						deleteLine();
+						removerLinhaAtual(lista, atualBuffer->prox);
+						fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow()-1, maxLinhas);
+
+						gotoxy(colunaAtual, --linhaAtual);
+
+						escreverCadeiasTela(atualBuffer, getCursorRow(), getCursorRow(), 1, maxColunas);
+						escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
 					}
 				}
 				break;
