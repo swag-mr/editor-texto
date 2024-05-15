@@ -62,7 +62,7 @@ int main(){
 		gotoxy(maxColunas-3, 1);
 		clearTillEndLine();
 		gotoxy(maxColunas-3, 1);
-		printf("%d", atualBuffer->cadeia->tamanho);
+		printf("%d", colunaAtual);
 		loadCursor();
 
 		entrada = getch();
@@ -191,16 +191,26 @@ int main(){
 
 			case ENTER:
 				clearTillEndLine();
+
+				if(atualBuffer == fimBuffer && getCursorRow() == maxLinhas){
+					scrollDown();
+					inicioBuffer=inicioBuffer->prox;
+				}
+
 				cursorNextLine();
 				lineFeed();
 				desanexarParaNovaLinha(lista, atualBuffer, colunaAtual);
 				linhaAtual++;
 				colunaAtual=1;
+
 				atualBuffer = atualBuffer->prox;
 
 				escreverCadeiasTela(atualBuffer, getCursorRow(),  getCursorRow(), colunaAtual, maxColunas);
 				fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas);
 				break;
+			
+			case '0':
+			break;
 
 			case CTRL_S:
 				gravarListaArquivo("./arquivos/texto.txt", lista);
@@ -208,11 +218,20 @@ int main(){
 
 			default:
 				inserirChar();
+
+				UTFCHAR *novoCaractere = (UTFCHAR*)malloc(sizeof(UTFCHAR));
+				inicializarUtfChar(novoCaractere);
+
 				for (int i = 0; i < numberOfBytesInChar((unsigned char)entrada) - 1; i++) {
+					inserirUtfByte(novoCaractere, (unsigned char)entrada);
 					printf("%c", entrada);
 					entrada = getch();
 				}
 				printf("%c", entrada);
+
+				inserirUtfByte(novoCaractere, entrada);
+				inserirCaractereCadeiaPosicao(atualBuffer->cadeia, novoCaractere, colunaAtual-1);
+				colunaAtual++;
 				break;
 		}
 	}while(entrada != '0');

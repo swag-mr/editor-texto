@@ -2,6 +2,7 @@
 *~
 *.swp
 *.swo
+*.txt
 
 # ignore compiled files
 main.exe
