@@ -185,6 +185,26 @@ void removerLinhaPosicao(LISTA *lista, int pos){
     }
 }
 
+void removerLinhaAtual(LISTA *lista, LINHA *linhaAtual){
+	if(linhaAtual->prox == NULL){
+		if(linhaAtual->ant != NULL){
+			linhaAtual->ant->prox = linhaAtual->prox;
+		}
+		linhaAtual->ant = NULL;
+		lista->tamanho--;
+		free(linhaAtual);
+	}else{
+		if(linhaAtual->ant != NULL){
+			linhaAtual->ant->prox = linhaAtual->prox;
+		}
+		linhaAtual->prox->ant = linhaAtual->ant;
+		linhaAtual->ant = NULL;
+		linhaAtual->prox = NULL;
+		lista->tamanho--;
+		free(linhaAtual);
+	}
+}
+
 int cadeiaEstaVazia(CADEIA *cadeia){
     if(cadeia->inicio == NULL || cadeia->fim == NULL)
     return 1;

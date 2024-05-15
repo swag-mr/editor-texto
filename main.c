@@ -168,12 +168,22 @@ int main(){
 						removerCaractereCadeiaPosicao(atualBuffer->cadeia, --colunaAtual);
 					}else{
 						if(atualBuffer->ant != NULL){
-							// atualBuffer->ant->cadeia->fim->prox = atualBuffer->cadeia->inicio;
-							// IMPLEMENTAR A CONCATENACAO DAS LINHAS
-							// removerLinhaPosicao(lista, linhaAtual); // Verificar se está correta a funcao
+							int tamanhoNovo;
+
 							atualBuffer = atualBuffer->ant;
+							if(atualBuffer->cadeia->fim != NULL){
+								atualBuffer->cadeia->fim->prox = atualBuffer->prox->cadeia->inicio;
+								tamanhoNovo = atualBuffer->cadeia->tamanho + atualBuffer->prox->cadeia->tamanho;
+							}else{
+								atualBuffer->cadeia = atualBuffer->prox->cadeia;
+								tamanhoNovo = atualBuffer->prox->cadeia->tamanho;
+							}
+
+							removerLinhaAtual(lista, atualBuffer->prox);
+
 							colunaAtual = atualBuffer->cadeia->tamanho + 1;
 							gotoxy(atualBuffer->cadeia->tamanho+1, --linhaAtual);
+							atualBuffer->cadeia->tamanho = tamanhoNovo;
 						}
 					}
 				}
