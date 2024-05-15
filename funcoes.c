@@ -249,7 +249,7 @@ void inserirCaractereCadeiaPosicao(CADEIA *cadeia, UTFCHAR *c, int pos){
 		inserirCaractereCadeiaInicio(cadeia, c);
 		return;
 	}
-	if(pos == cadeia->tamanho){
+	if(pos >= cadeia->tamanho){
 		inserirCaractereCadeiaFim(cadeia, c);
 		return;
 	}
@@ -264,11 +264,12 @@ void inserirCaractereCadeiaPosicao(CADEIA *cadeia, UTFCHAR *c, int pos){
 		aux = aux->prox;
 	}
 
-	CARACTERE *ant = aux->ant;
-	ant->prox = caractere;
-	caractere->prox = aux;
-	caractere->ant = ant;
-	aux->ant = caractere;
+	CARACTERE *proxima = aux->prox;
+
+	aux->prox = caractere;
+	caractere->prox = proxima;
+	caractere->ant = aux;
+	proxima->ant = caractere;
 }
 
 void removerCaractereCadeiaInicio(CADEIA *cadeia){
@@ -500,16 +501,20 @@ void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna){
 		cont++;
 	}
 
+	novaLinha->cadeia->inicio = c;
+	novaLinha->cadeia->fim = linha->cadeia->fim;
+
 	if(c != NULL){
 		if(c->ant != NULL){
+			linha->cadeia->fim = c->ant;
 			c->ant->prox = NULL;
 		}else{
 			linha->cadeia->inicio = NULL;
+			linha->cadeia->fim = NULL;
 		}
 		c->ant = NULL;
 	}
 
-	novaLinha->cadeia->inicio = c;
 
 	novaLinha->cadeia->tamanho = linha->cadeia->tamanho - cont;
 	linha->cadeia->tamanho = cont;

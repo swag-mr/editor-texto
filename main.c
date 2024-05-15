@@ -62,7 +62,7 @@ int main(){
 		gotoxy(maxColunas-3, 1);
 		clearTillEndLine();
 		gotoxy(maxColunas-3, 1);
-		printf("%d", atualBuffer->cadeia->tamanho);
+		printf("%d", colunaAtual);
 		loadCursor();
 
 		entrada = getch();
@@ -163,9 +163,9 @@ int main(){
 					printf("%c", entrada);
 					entrada = getch();
 				}
-				inserirUtfByte(novoCaractere, entrada);
 				printf("%c", entrada);
 
+				inserirUtfByte(novoCaractere, entrada);
 				inserirCaractereCadeiaPosicao(atualBuffer->cadeia, novoCaractere, colunaAtual-1);
 				colunaAtual++;
 				break;
