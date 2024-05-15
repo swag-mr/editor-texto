@@ -114,7 +114,7 @@ int main(){
 
 				case ARROW_RIGHT:
 					if(colunaAtual == atualBuffer->cadeia->tamanho+1){
-						if(atualBuffer->prox != NULL){
+						if(atualBuffer != fimBuffer){
 							atualBuffer = atualBuffer->prox;
 							colunaAtual = 1;
 							gotoxy(1, ++linhaAtual);
