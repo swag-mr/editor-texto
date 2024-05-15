@@ -148,63 +148,60 @@ void removerLinhaFim(LISTA *lista){
 }
 
 void removerLinhaPosicao(LISTA *lista, int pos){
-	if(pos == 0){
-		// Remover Inicio
-		removerLinhaInicio(lista);
-		return;
-	}
+    if(pos == 0){
+	// Remover Inicio
+	removerLinhaInicio(lista);
+	return;
+    }
 
-	if(pos == lista->tamanho-1){
-		// Remover Final
-		removerLinhaFim(lista);
-		return;
-	}
+    if(pos == lista->tamanho-1){
+	// Remover Final
+	removerLinhaFim(lista);
+	return;
+    }
 
-	if(listaEstaVazia(lista)){
-		printf("Lista vazia, impossivel remover!");
-		return;
-	}else{
-		if(pos <= lista->tamanho/2){
-			// Comeca a buscar do inicio
-			LINHA *linhaAnterior = NULL;
-			LINHA *linhaAtual;
-			linhaAtual = lista->inicio;
-			int i=0;
+    if(listaEstaVazia(lista)){
+	return;
+    }else{
+	    // Comeca a buscar do inicio
+	    LINHA *linhaAnterior = NULL;
+	    LINHA *linhaAtual;
+	    linhaAtual = lista->inicio;
+	    int i=0;
 
-			while(linhaAtual != NULL){
-				if(i == pos){
-					// Remover Meio
-					linhaAnterior->prox = linhaAtual->prox;
-					linhaAtual->prox->ant = linhaAnterior;
-					lista->tamanho--;
-					free(linhaAtual);
-					return;
-				}
-				i++;
-				linhaAnterior = linhaAtual;
-				linhaAtual = linhaAtual->prox;
+	    while(linhaAtual != NULL){
+			if(i == pos){
+				// Remover Meio
+				linhaAnterior->prox = linhaAtual->prox;
+				linhaAtual->prox->ant = linhaAnterior;
+				lista->tamanho--;
+				free(linhaAtual);
+				return;
 			}
-		}else{
-			// Comeca a buscar do final
-			LINHA *linhaProx = NULL;
-			LINHA *linhaAtual;
-			linhaAtual = lista->fim;
-			int i=0;
+			i++;
+			linhaAnterior = linhaAtual;
+			linhaAtual = linhaAtual->prox;
+	    }
+    }
+}
 
-			while(linhaAtual != NULL){
-				if(i == pos){
-					// Remover Meio
-					linhaProx->ant = linhaAtual->ant;
-					linhaAtual->ant->prox = linhaProx;
-					lista->tamanho--;
-					free(linhaAtual);
-					return;
-				}
-				i++;
-				linhaProx = linhaAtual;
-				linhaAtual = linhaAtual->ant;
-			}
+void removerLinhaAtual(LISTA *lista, LINHA *linhaAtual){
+	if(linhaAtual->prox == NULL){
+		if(linhaAtual->ant != NULL){
+			linhaAtual->ant->prox = linhaAtual->prox;
 		}
+		linhaAtual->ant = NULL;
+		lista->tamanho--;
+		free(linhaAtual);
+	}else{
+		if(linhaAtual->ant != NULL){
+			linhaAtual->ant->prox = linhaAtual->prox;
+		}
+		linhaAtual->prox->ant = linhaAtual->ant;
+		linhaAtual->ant = NULL;
+		linhaAtual->prox = NULL;
+		lista->tamanho--;
+		free(linhaAtual);
 	}
 }
 
@@ -515,7 +512,12 @@ void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna){
 		c->ant = NULL;
 	}
 
-
 	novaLinha->cadeia->tamanho = linha->cadeia->tamanho - cont;
 	linha->cadeia->tamanho = cont;
+}
+
+void apagarChar(LISTA *lista, LINHA *linha){
+	if(!cadeiaEstaVazia(linha->cadeia)){
+
+	}
 }
