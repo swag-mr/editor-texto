@@ -161,10 +161,8 @@ void removerLinhaPosicao(LISTA *lista, int pos){
     }
 
     if(listaEstaVazia(lista)){
-	printf("Lista vazia, impossivel remover!");
 	return;
     }else{
-	if(pos <= lista->tamanho/2){
 	    // Comeca a buscar do inicio
 	    LINHA *linhaAnterior = NULL;
 	    LINHA *linhaAtual;
@@ -172,39 +170,18 @@ void removerLinhaPosicao(LISTA *lista, int pos){
 	    int i=0;
 
 	    while(linhaAtual != NULL){
-		if(i == pos){
-		    // Remover Meio
-		    linhaAnterior->prox = linhaAtual->prox;
-		    linhaAtual->prox->ant = linhaAnterior;
-		    lista->tamanho--;
-		    free(linhaAtual);
-		    return;
-		}
-		i++;
-		linhaAnterior = linhaAtual;
-		linhaAtual = linhaAtual->prox;
+			if(i == pos){
+				// Remover Meio
+				linhaAnterior->prox = linhaAtual->prox;
+				linhaAtual->prox->ant = linhaAnterior;
+				lista->tamanho--;
+				free(linhaAtual);
+				return;
+			}
+			i++;
+			linhaAnterior = linhaAtual;
+			linhaAtual = linhaAtual->prox;
 	    }
-	}else{
-	    // Comeca a buscar do final
-	    LINHA *linhaProx = NULL;
-	    LINHA *linhaAtual;
-	    linhaAtual = lista->fim;
-	    int i=0;
-
-	    while(linhaAtual != NULL){
-		if(i == pos){
-		    // Remover Meio
-		    linhaProx->ant = linhaAtual->ant;
-		    linhaAtual->ant->prox = linhaProx;
-		    lista->tamanho--;
-		    free(linhaAtual);
-		    return;
-		}
-		i++;
-		linhaProx = linhaAtual;
-		linhaAtual = linhaAtual->ant;
-	    }
-	}
     }
 }
 
@@ -511,13 +488,19 @@ void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna){
     }
 
     if(c != NULL){
-	if(c->ant != NULL){
-	    c->ant->prox = NULL;
-	}else{
-	    linha->cadeia->inicio = NULL;
-	}
-	c->ant = NULL;
+		if(c->ant != NULL){
+			c->ant->prox = NULL;
+		}else{
+			linha->cadeia->inicio = NULL;
+		}
+		c->ant = NULL;
     }
 
     novaLinha->cadeia->inicio = c;
+}
+
+void apagarChar(LISTA *lista, LINHA *linha){
+	if(!cadeiaEstaVazia(linha->cadeia)){
+
+	}
 }

@@ -73,28 +73,56 @@ int main(){
 			switch(entrada){
 				case ARROW_UP:
 					if(atualBuffer != inicioBuffer){
-						cursorUp();
-						linhaAtual--;
-						atualBuffer = atualBuffer->ant;
+						if(colunaAtual > atualBuffer->ant->cadeia->tamanho){
+							atualBuffer = atualBuffer->ant;
+							colunaAtual = atualBuffer->cadeia->tamanho + 1;
+							gotoxy(atualBuffer->cadeia->tamanho+1, --linhaAtual);
+						}else{
+							cursorUp();
+							linhaAtual--;
+							atualBuffer = atualBuffer->ant;
+						}
 					}
 					break;
 
 				case ARROW_DOWN:
 					if(atualBuffer != fimBuffer){
-						cursorDown();
-						linhaAtual++;
-						atualBuffer = atualBuffer->prox;
+						if(colunaAtual > atualBuffer->prox->cadeia->tamanho){
+							atualBuffer = atualBuffer->prox;
+							colunaAtual = atualBuffer->cadeia->tamanho + 1;
+							gotoxy(atualBuffer->cadeia->tamanho+1, ++linhaAtual);
+						}else{
+							cursorDown();
+							linhaAtual++;
+							atualBuffer = atualBuffer->prox;
+						}
 					}
 					break;
 
 				case ARROW_LEFT:
-					cursorLeft();
-					colunaAtual--;
+					if(colunaAtual == 1){
+						if(atualBuffer->ant != NULL){
+							atualBuffer = atualBuffer->ant;
+							colunaAtual = atualBuffer->cadeia->tamanho+1;
+							gotoxy(atualBuffer->cadeia->tamanho+1, --linhaAtual);
+						}
+					}else{
+						cursorLeft();
+						colunaAtual--;
+					}
 					break;
 
 				case ARROW_RIGHT:
-					cursorRight();
-					colunaAtual++;
+					if(colunaAtual == atualBuffer->cadeia->tamanho+1){
+						if(atualBuffer->prox != NULL){
+							atualBuffer = atualBuffer->prox;
+							colunaAtual = 1;
+							gotoxy(1, ++linhaAtual);
+						}
+					}else{
+						cursorRight();
+						colunaAtual++;
+					}
 					break;
 				case PAGE_UP:
 					if(inicioBuffer->ant != NULL){
@@ -125,8 +153,22 @@ int main(){
 
 		switch(entrada){
 			case BACKSPACE:
-				cursorLeft();
-				removerChar();
+				if(atualBuffer->cadeia != NULL){
+					if(colunaAtual != 1){
+						cursorLeft();
+						removerChar();
+						removerCaractereCadeiaPosicao(atualBuffer->cadeia, --colunaAtual);
+					}else{
+						if(atualBuffer->ant != NULL){
+							// atualBuffer->ant->cadeia->fim->prox = atualBuffer->cadeia->inicio;
+							// IMPLEMENTAR A CONCATENACAO DAS LINHAS
+							// removerLinhaPosicao(lista, linhaAtual); // Verificar se está correta a funcao
+							atualBuffer = atualBuffer->ant;
+							colunaAtual = atualBuffer->cadeia->tamanho + 1;
+							gotoxy(atualBuffer->cadeia->tamanho+1, --linhaAtual);
+						}
+					}
+				}
 				break;
 
 			case ENTER:
@@ -153,6 +195,6 @@ int main(){
 		}
 	}while(entrada != '0');
 	clear();
-	gravarListaArquivo("./arquivos/novo.txt", lista);
+	gravarListaArquivo("./arquivos/texto.txt", lista);
     return 0;
 }
