@@ -1,6 +1,9 @@
 #ifndef FUNCOES_H
 #define FUNCOES_H
 
+#define CTRL_S 19
+#define END 79
+#define HOME 71
 #define PAGE_UP 73
 #define PAGE_DOWN 81
 #define ARROW_UP 72

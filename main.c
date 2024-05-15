@@ -145,6 +145,14 @@ int main(){
 						escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
 					}
 					break;
+				case END:
+					colunaAtual = atualBuffer->cadeia->tamanho + 1;
+					gotoxy(atualBuffer->cadeia->tamanho+1, linhaAtual);
+					break;
+				case HOME:
+					colunaAtual = 1;
+					gotoxy(1, linhaAtual);
+					break;
 				default:
 					break;
 			}
@@ -184,6 +192,10 @@ int main(){
 				fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas);
 				break;
 
+			case CTRL_S:
+				gravarListaArquivo("./arquivos/texto.txt", lista);
+				break;
+
 			default:
 				inserirChar();
 				for (int i = 0; i < numberOfBytesInChar((unsigned char)entrada) - 1; i++) {
@@ -195,6 +207,5 @@ int main(){
 		}
 	}while(entrada != '0');
 	clear();
-	gravarListaArquivo("./arquivos/texto.txt", lista);
     return 0;
 }
