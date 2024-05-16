@@ -130,7 +130,13 @@ int main(){
 					break;
 				case PAGE_UP:
 					if(inicioBuffer->ant != NULL){
-						scrollUp();
+						if(colunaAtual <= atualBuffer->ant->cadeia->tamanho+1){
+							scrollUp();
+						}else{
+							colunaAtual = atualBuffer->ant->cadeia->tamanho+1;
+							scrollUp();
+							gotoxy(colunaAtual, getCursorRow());
+						}
 						linhaAtual--;
 						atualBuffer = atualBuffer->ant;
 						inicioBuffer = inicioBuffer->ant;
@@ -141,7 +147,13 @@ int main(){
 
 				case PAGE_DOWN:
 					if(fimBuffer->prox != NULL){
+						if(colunaAtual <= atualBuffer->prox->cadeia->tamanho+1){
 						scrollDown();
+						}else{
+							colunaAtual = atualBuffer->prox->cadeia->tamanho+1;
+							scrollDown();
+							gotoxy(colunaAtual, getCursorRow());
+						}
 						linhaAtual++;
 						atualBuffer = atualBuffer->prox;
 						fimBuffer = fimBuffer->prox;
