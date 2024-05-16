@@ -62,7 +62,7 @@ int main(){
 		gotoxy(maxColunas-3, 1);
 		clearTillEndLine();
 		gotoxy(maxColunas-3, 1);
-		printf("%d", colunaAtual);
+		printf("%d", linhaAtual);
 		loadCursor();
 
 		entrada = getch();
@@ -76,7 +76,8 @@ int main(){
 						if(colunaAtual > atualBuffer->ant->cadeia->tamanho){
 							atualBuffer = atualBuffer->ant;
 							colunaAtual = atualBuffer->cadeia->tamanho + 1;
-							gotoxy(atualBuffer->cadeia->tamanho+1, --linhaAtual);
+							linhaAtual--;
+							gotoxy(atualBuffer->cadeia->tamanho+1, getCursorRow()-1);
 						}else{
 							cursorUp();
 							linhaAtual--;
@@ -90,7 +91,8 @@ int main(){
 						if(colunaAtual > atualBuffer->prox->cadeia->tamanho){
 							atualBuffer = atualBuffer->prox;
 							colunaAtual = atualBuffer->cadeia->tamanho + 1;
-							gotoxy(atualBuffer->cadeia->tamanho+1, ++linhaAtual);
+							linhaAtual++;
+							gotoxy(atualBuffer->cadeia->tamanho+1, getCursorRow()+1);
 						}else{
 							cursorDown();
 							linhaAtual++;
@@ -104,7 +106,8 @@ int main(){
 						if(atualBuffer->ant != NULL){
 							atualBuffer = atualBuffer->ant;
 							colunaAtual = atualBuffer->cadeia->tamanho+1;
-							gotoxy(atualBuffer->cadeia->tamanho+1, --linhaAtual);
+							linhaAtual--;
+							gotoxy(atualBuffer->cadeia->tamanho+1, getCursorRow()-1);
 						}
 					}else{
 						cursorLeft();
@@ -117,7 +120,8 @@ int main(){
 						if(atualBuffer != fimBuffer){
 							atualBuffer = atualBuffer->prox;
 							colunaAtual = 1;
-							gotoxy(1, ++linhaAtual);
+							linhaAtual++;
+							gotoxy(1, getCursorRow()+1);
 						}
 					}else{
 						cursorRight();
