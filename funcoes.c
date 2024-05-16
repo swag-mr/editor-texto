@@ -411,6 +411,7 @@ void getTerminalColumnsRows(int *columns, int *rows){
 }
 
 LINHA *escreverCadeiasTela(LINHA *inicio, int startLinha, int endLinha, int startColuna, int endColuna){
+	hideCursor()
 	saveCursor();
 	gotoxy(1, startLinha);
 	LINHA *aux = inicio;
@@ -434,6 +435,7 @@ LINHA *escreverCadeiasTela(LINHA *inicio, int startLinha, int endLinha, int star
 		aux = aux->prox;
 	}
 	loadCursor();
+	showCursor();
 	if(ant == NULL){
 		return inicio;
 	}

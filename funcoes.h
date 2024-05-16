@@ -31,7 +31,8 @@
 #define deleteLine() printf("\033[1M");
 #define inserirChar() printf("\033[1@");
 #define removerChar() printf("\033[1P");
-
+#define hideCursor() printf("\033[?25l");
+#define showCursor() printf("\033[?25h");
 typedef struct utf_byte{
 	unsigned char byte;
 	struct utf_byte *prox;

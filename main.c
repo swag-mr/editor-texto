@@ -205,8 +205,8 @@ int main(){
 							deleteLine();
 							removerLinhaAtual(lista, atualBuffer->prox);
 							fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow()-1, maxLinhas); 
-
-							gotoxy(colunaAtual, --linhaAtual);
+							linhaAtual--;
+							gotoxy(colunaAtual, getCursorRow()-1);
 
 							escreverCadeiasTela(atualBuffer, getCursorRow(), getCursorRow(), 1, maxColunas);
 							escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
