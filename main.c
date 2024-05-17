@@ -184,6 +184,9 @@ int main(){
 						removerCaractereCadeiaPosicao(atualBuffer->cadeia, --colunaAtual);
 					}else{
 						if(atualBuffer->ant != NULL){
+							if(atualBuffer == inicioBuffer){
+								inicioBuffer = atualBuffer->ant;
+							}
 							atualBuffer = atualBuffer->ant;
 							if(!cadeiaEstaVazia(atualBuffer->prox->cadeia)){
 								int tamanhoNovo;
@@ -215,14 +218,18 @@ int main(){
 					}
 				}else{
 					if(atualBuffer->ant != NULL){
+						if(atualBuffer == inicioBuffer){
+							inicioBuffer = atualBuffer->ant;
+						}
 						atualBuffer = atualBuffer->ant;
 						colunaAtual = atualBuffer->cadeia->tamanho + 1;
 						
 						deleteLine();
 						removerLinhaAtual(lista, atualBuffer->prox);
 						fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow()-1, maxLinhas);
+						linhaAtual--;
 
-						gotoxy(colunaAtual, --linhaAtual);
+						gotoxy(colunaAtual, getCursorRow()-1);
 
 						escreverCadeiasTela(atualBuffer, getCursorRow(), getCursorRow(), 1, maxColunas);
 						escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
