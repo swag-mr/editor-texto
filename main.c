@@ -294,9 +294,6 @@ int main(){
 				escreverCadeiasTela(atualBuffer, getCursorRow(),  getCursorRow(), colunaAtual, maxColunas);
 				fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas);
 				break;
-			
-			case '0':
-			break;
 
 			case CTRL_S:
 				gravarListaArquivo("./arquivos/novo.txt", lista);
@@ -308,7 +305,7 @@ int main(){
 				UTFCHAR *novoCaractere = (UTFCHAR*)malloc(sizeof(UTFCHAR));
 				inicializarUtfChar(novoCaractere);
 
-				for (int i = 0; i < numberOfBytesInChar((unsigned char)entrada) - 1; i++) {
+				for (int i = 0; i < numberOfBytesInChar((unsigned char)entrada)- 1; i++) {
 					inserirUtfByte(novoCaractere, (unsigned char)entrada);
 					printf("%c", entrada);
 					entrada = getch();
@@ -320,7 +317,7 @@ int main(){
 				colunaAtual++;
 				break;
 		}
-	}while(entrada != '0');
+	}while(entrada != CTRL_Q);
 	clear();
     return 0;
 }
