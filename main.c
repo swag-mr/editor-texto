@@ -299,6 +299,9 @@ int main(){
 				gravarListaArquivo("./arquivos/novo.txt", lista);
 				break;
 
+			case CTRL_Q:
+				break;
+
 			default:
 				inserirChar();
 
