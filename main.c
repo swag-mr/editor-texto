@@ -184,9 +184,6 @@ int main(){
 						removerCaractereCadeiaPosicao(atualBuffer->cadeia, --colunaAtual);
 					}else{
 						if(atualBuffer->ant != NULL){
-							if(atualBuffer == inicioBuffer){
-								inicioBuffer = atualBuffer->ant;
-							}
 							atualBuffer = atualBuffer->ant;
 							if(!cadeiaEstaVazia(atualBuffer->prox->cadeia)){
 								int tamanhoNovo;
@@ -206,20 +203,42 @@ int main(){
 								
 								atualBuffer->cadeia->tamanho = tamanhoNovo;
 							}
+							if(atualBuffer->prox == inicioBuffer){
+								inicioBuffer = atualBuffer;
 
-							deleteLine();
-							removerLinhaAtual(lista, atualBuffer->prox);
-							fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas); 
-							linhaAtual--;
-							gotoxy(colunaAtual, getCursorRow()-1);
+								removerLinhaAtual(lista, atualBuffer->prox);
+								linhaAtual--;
+								gotoxy(colunaAtual, getCursorRow());
 
-							saveCursor()
-							gotoxy(1, getCursorRow());
-							clearTillEndLine();
-							loadCursor();
+								saveCursor()
+								gotoxy(1, getCursorRow());
+								clearTillEndLine();
+								loadCursor();
 
-							escreverCadeiasTela(atualBuffer, getCursorRow(), getCursorRow(), 1, maxColunas);
-							escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
+								escreverCadeiasTela(atualBuffer, getCursorRow(), getCursorRow(), 1, maxColunas);
+							}else{
+								deleteLine();
+								removerLinhaAtual(lista, atualBuffer->prox);
+								linhaAtual--;
+								gotoxy(colunaAtual, getCursorRow()-1);
+								fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas); 
+
+								saveCursor()
+								gotoxy(1, getCursorRow());
+								clearTillEndLine();
+								loadCursor();
+
+								int bufferRow=getCursorRow();
+								LINHA *aux = atualBuffer;
+								while(aux != fimBuffer){
+									aux = aux->prox;
+									bufferRow++;
+								}
+								escreverCadeiasTela(atualBuffer, getCursorRow(), getCursorRow(), 1, maxColunas);
+								if(bufferRow == maxLinhas){
+									escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
+								}
+							}
 							
 						}
 					}

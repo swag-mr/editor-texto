@@ -413,7 +413,7 @@ LINHA *escreverCadeiasTela(LINHA *inicio, int startLinha, int endLinha, int star
 	while(aux != NULL && contLinhas <= endLinha){
 		CARACTERE *auxCaractere = aux->cadeia->inicio;
 		int contColunas=startColuna;
-		while(auxCaractere != aux->cadeia->fim && contColunas <= endColuna){
+		while(auxCaractere != NULL && contColunas <= endColuna){
 			UTFBYTE *auxByte = auxCaractere->utfChar->inicio;
 			while(auxByte != NULL){
 				printf("%c", auxByte->byte);
@@ -501,7 +501,6 @@ void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna){
 			linha->cadeia->fim = c->ant;
 			c->ant->prox = NULL;
 		}else{
-			system("pause");
 			linha->cadeia->inicio = NULL;
 			linha->cadeia->fim = NULL;
 		}
