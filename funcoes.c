@@ -107,44 +107,34 @@ void inserirLinhaPosicao(LISTA *lista, LINHA *linhaAtual){
 }
 
 void removerLinhaInicio(LISTA *lista){
-	if(listaEstaVazia(lista)){
-		printf("Lista vazia, impossivel remover!");
+	LINHA *linhaAux = lista->inicio;
+	lista->inicio = linhaAux->prox;
+	lista->tamanho--;
+
+	free(linhaAux);
+	free(linhaAux->cadeia);
+
+	if(lista->inicio == NULL){
+		lista->fim = NULL;
 		return;
-	}else{
-		LINHA *linhaAux = NULL;
-		linhaAux = lista->inicio;
-
-		lista->inicio = lista->inicio->prox;
-		lista->tamanho--;
-		free(linhaAux);
-
-		if(lista->inicio == NULL){
-			lista->fim = lista->inicio;
-			return;
-		}
-		lista->inicio->ant = NULL;
 	}
+	lista->inicio->ant = NULL;
 }
 
 void removerLinhaFim(LISTA *lista){
-	if(listaEstaVazia(lista)){
-		printf("Lista vazia, impossivel remover!");
+	LINHA *linhaAux = lista->fim;
+	lista->fim = linhaAux->ant;
+	lista->tamanho--;
+
+	free(linhaAux);
+	free(linhaAux->cadeia);
+
+	if(lista->fim == NULL){
+		lista->inicio = NULL;
 		return;
-	}else{
-		LINHA *linhaAux = NULL;
-		linhaAux = lista->fim;
-
-		lista->fim = lista->fim->ant;
-		lista->tamanho--;
-		free(linhaAux);
-
-		if(lista->fim == NULL){
-			lista->inicio = lista->fim;
-			return;
-		}
-
-		lista->fim->prox = NULL;
 	}
+
+	lista->fim->prox = NULL;
 }
 
 void removerLinhaPosicao(LISTA *lista, int pos){
@@ -186,23 +176,25 @@ void removerLinhaPosicao(LISTA *lista, int pos){
 }
 
 void removerLinhaAtual(LISTA *lista, LINHA *linhaAtual){
-	if(linhaAtual->prox == NULL){
-		if(linhaAtual->ant != NULL){
-			linhaAtual->ant->prox = linhaAtual->prox;
-		}
-		linhaAtual->ant = NULL;
-		lista->tamanho--;
-		free(linhaAtual);
-	}else{
-		if(linhaAtual->ant != NULL){
-			linhaAtual->ant->prox = linhaAtual->prox;
-		}
-		linhaAtual->prox->ant = linhaAtual->ant;
-		linhaAtual->ant = NULL;
-		linhaAtual->prox = NULL;
-		lista->tamanho--;
-		free(linhaAtual);
+	if(lista->inicio == linhaAtual){
+		removerLinhaInicio(lista);
+		return;
 	}
+
+	if(lista->fim == linhaAtual){
+		removerLinhaFim(lista);
+		return;
+	}
+
+	LINHA *linhaAnterior = linhaAtual->ant;
+	LINHA *linhaProxima = linhaAtual->prox;
+
+	linhaAnterior->prox = linhaProxima;
+	linhaProxima->ant = linhaAnterior;
+
+	lista->tamanho--;
+	free(linhaAtual);
+	free(linhaAtual->cadeia);
 }
 
 int cadeiaEstaVazia(CADEIA *cadeia){
@@ -301,6 +293,7 @@ void removerCaractereCadeiaFim(CADEIA *cadeia){
 
 	if(cadeiaEstaVazia(cadeia)){
 		cadeia->inicio = NULL;
+		return;
 	}
 	cadeia->fim->prox = NULL;
 }
@@ -420,7 +413,7 @@ LINHA *escreverCadeiasTela(LINHA *inicio, int startLinha, int endLinha, int star
 	while(aux != NULL && contLinhas <= endLinha){
 		CARACTERE *auxCaractere = aux->cadeia->inicio;
 		int contColunas=startColuna;
-		while(auxCaractere != NULL && contColunas <= endColuna){
+		while(auxCaractere != aux->cadeia->fim && contColunas <= endColuna){
 			UTFBYTE *auxByte = auxCaractere->utfChar->inicio;
 			while(auxByte != NULL){
 				printf("%c", auxByte->byte);
@@ -508,6 +501,7 @@ void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna){
 			linha->cadeia->fim = c->ant;
 			c->ant->prox = NULL;
 		}else{
+			system("pause");
 			linha->cadeia->inicio = NULL;
 			linha->cadeia->fim = NULL;
 		}

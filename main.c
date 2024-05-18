@@ -62,7 +62,7 @@ int main(){
 		gotoxy(maxColunas-3, 1);
 		clearTillEndLine();
 		gotoxy(maxColunas-3, 1);
-		printf("%d", linhaAtual);
+		printf("%d", colunaAtual);
 		loadCursor();
 
 		entrada = getch();
@@ -193,11 +193,13 @@ int main(){
 
 								if(atualBuffer->cadeia->fim != NULL){
 									atualBuffer->cadeia->fim->prox = atualBuffer->prox->cadeia->inicio;
+									atualBuffer->prox->cadeia->inicio->ant = atualBuffer->cadeia->fim;
 									atualBuffer->cadeia->fim = atualBuffer->prox->cadeia->fim;
 									tamanhoNovo = atualBuffer->cadeia->tamanho + atualBuffer->prox->cadeia->tamanho;
 									colunaAtual = atualBuffer->cadeia->tamanho + 1;
 								}else{
-									atualBuffer->cadeia = atualBuffer->prox->cadeia;
+									atualBuffer->cadeia->inicio = atualBuffer->prox->cadeia->inicio;
+									atualBuffer->cadeia->fim = atualBuffer->prox->cadeia->fim;
 									tamanhoNovo = atualBuffer->cadeia->tamanho;
 									colunaAtual = 1;
 								}
@@ -207,9 +209,14 @@ int main(){
 
 							deleteLine();
 							removerLinhaAtual(lista, atualBuffer->prox);
-							fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow()-1, maxLinhas); 
+							fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas); 
 							linhaAtual--;
 							gotoxy(colunaAtual, getCursorRow()-1);
+
+							saveCursor()
+							gotoxy(1, getCursorRow());
+							clearTillEndLine();
+							loadCursor();
 
 							escreverCadeiasTela(atualBuffer, getCursorRow(), getCursorRow(), 1, maxColunas);
 							escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
