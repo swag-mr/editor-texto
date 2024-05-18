@@ -64,8 +64,7 @@ void inserirUtfByte(UTFCHAR *u, unsigned char c){
 }
 
 void inserirLinhaInicio(LISTA *lista){
-	LINHA *linha;
-	linha = criarLinha();
+	LINHA *linha = criarLinha();
 	lista->tamanho++;
 
 	if(listaEstaVazia(lista)){
@@ -79,8 +78,7 @@ void inserirLinhaInicio(LISTA *lista){
 }
 
 void inserirLinhaFim(LISTA *lista){
-	LINHA *linha;
-	linha = criarLinha();
+	LINHA *linha = criarLinha();
 	lista->tamanho++;
 
 	if(listaEstaVazia(lista)){
@@ -94,8 +92,12 @@ void inserirLinhaFim(LISTA *lista){
 }
 
 void inserirLinhaPosicao(LISTA *lista, LINHA *linhaAtual){
-	LINHA *linha;
-	linha = criarLinha();
+	if(linhaAtual == lista->fim){
+		inserirLinhaFim(lista);
+		return;
+	}
+
+	LINHA *linha = criarLinha();
 	lista->tamanho++;
 
 	linha->ant = linhaAtual;
