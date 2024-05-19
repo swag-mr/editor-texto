@@ -1,6 +1,15 @@
 #ifndef FUNCOES_H
 #define FUNCOES_H
 
+#define textoPadrao() printf("\033[37m")
+#define fundoPadrao() printf("\033[40m")
+#define textoVerde() printf("\033[32m")
+#define textoVermelho() printf("\033[31m")
+#define textoAmarelo() printf("\033[33m")
+#define textoAzul() printf("\033[34m")
+#define textoMagenta() printf("\033[35m")
+#define textoCiano() printf("\033[36m")
+#define padrao() printf("\033[0m")
 #define CTRL_S 19
 #define CTRL_Q 17
 #define END 79
@@ -119,5 +128,9 @@ LINHA *determinarFimBuffer(LINHA *inicio, int start, int end);
 int getCursorRow();
 
 int numberOfBytesInChar(unsigned char val);
+
+int veririficarNomeArquivo(char nome[]);
+int menu(char arquivo[], int maxLinhas, int maxColunas, LISTA *lista);
+
 #include "funcoes.c"
 #endif

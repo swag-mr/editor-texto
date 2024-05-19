@@ -559,7 +559,156 @@ void desenharMoldura(int largura, int altura){
 	lowerRightCorner();
 
 	gotoxy(largura/2 - cont/2+1, 2);
-	printf("%s", titulo);
+	int k=0;
+	for(int i=0; i < cont; i++){
+		int mod;
+		if(titulo[i] != ' '){
+			mod = k % 2;
+			k++;
+		}
+		switch(mod){
+			case 0:
+				textoAmarelo();
+				break;
+			case 1:
+				textoCiano();
+				break;
+		}
+		printf("%c", titulo[i]);
+	}
+	textoPadrao();
 
 	showCursor();
+}
+
+int veririficarNomeArquivo(char nome[]){
+	DIR *d;
+	struct dirent *dir;
+	d = opendir("./arquivos/");
+	int cont = 0;
+	if(d){
+		while((dir = readdir(d)) != NULL){
+			if(strcasecmp(dir->d_name, nome) == 0){
+				cont++;
+				break;
+			}
+		}
+		closedir(d);
+	}
+
+	return cont;
+}
+
+int menu(char arquivo[], int maxLinhas, int maxColunas, LISTA *lista){
+	int opc;
+	desenharMoldura(maxColunas, maxLinhas);
+	gotoxy(2, 4);
+	do{
+		printf("1 - Editar novo arquivo\n");
+		gotoxy(2, getCursorRow());
+
+		printf("2 - Editar arquivo existente\n");
+		gotoxy(2, getCursorRow());
+
+		printf("0 - Sair\n");
+		gotoxy(2, getCursorRow());
+
+		printf("Digite a sua opção: ");
+		scanf("%d", &opc);
+
+		fflush(stdin);
+
+		switch(opc){
+			char nome[30];
+			case 1:
+				// Função para novo arquivo
+				printf("\n");
+				gotoxy(2, getCursorRow());
+				printf("Digite o nome do novo arquivo (texto.txt): ");
+				gets(nome);
+
+				int nomeIgual = veririficarNomeArquivo(nome);
+
+				if(nomeIgual){
+					textoVermelho();
+					printf("\n");
+					gotoxy(2, getCursorRow());
+					printf("ERRO: Arquivo já existente\n\n");
+					textoPadrao();
+					gotoxy(2, getCursorRow());
+					system("pause");
+					opc = -1;
+					clear();
+					desenharMoldura(maxColunas, maxLinhas);
+					gotoxy(2, 4);
+				}else{
+					strcat(arquivo, nome);
+					inserirLinhaFim(lista);
+				}
+				break;
+			case 2:
+				// Função para editar arquivo existente
+				gotoxy(2, getCursorRow());
+				DIR *d;
+				struct dirent *dir;
+				d = opendir("./arquivos/");
+				textoCiano();
+				printf("\n\tArquivos Disponíveis:\n\n");
+				textoVerde();
+				if(d){
+					while((dir = readdir(d)) != NULL){
+						gotoxy(2, getCursorRow());
+						if(strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0){
+							printf("\t%s\n", dir->d_name); // Mostrar apenas arquivos txt
+						}
+					}
+					closedir(d);
+					textoPadrao();
+					printf("\n");
+				}
+				gotoxy(2, getCursorRow());
+				printf("Digite o nome do arquivo (texto.txt): ");
+				gets(nome);
+				
+				int nomeExistente = veririficarNomeArquivo(nome);
+
+				if(nomeExistente == 0){
+					textoVermelho();
+					printf("\n");
+					gotoxy(2, getCursorRow());
+					printf("ERRO: Arquivo inexistente\n\n");
+					textoPadrao();
+					gotoxy(2, getCursorRow());
+					system("pause");
+					clear();
+					opc = -1;
+					desenharMoldura(maxColunas, maxLinhas);
+					gotoxy(2, 4);
+				}else{
+					strcat(arquivo, nome);
+					lerArquivoLista(arquivo, lista);
+				}
+				break;
+			case 0:
+				// Sair
+				clear();
+				return 0;
+			default:
+				textoVermelho();
+				printf("\n");
+				gotoxy(2, getCursorRow());
+				printf("Opção inválida\n\n");
+				textoPadrao();
+				gotoxy(2, getCursorRow());
+				system("pause");
+				clear();
+				desenharMoldura(maxColunas, maxLinhas);
+				gotoxy(2, 4);
+				break;
+		}
+	}while(opc > 2 || opc < 0);
+
+	clear();
+
+	return 1;
 }
