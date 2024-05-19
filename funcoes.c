@@ -512,3 +512,54 @@ void desanexarParaNovaLinha(LISTA *lista, LINHA *linha, int posColuna){
 	novaLinha->cadeia->tamanho = linha->cadeia->tamanho - cont;
 	linha->cadeia->tamanho = cont;
 }
+
+void desenharMoldura(int largura, int altura){
+	int i, j, cont=0;
+	char titulo[30] = "ODIN - Text Editor";
+
+	while(titulo[cont] != '\0'){
+		cont++;
+	}
+
+	hideCursor()
+
+	clear();
+	gotoxy(1,1);
+
+	upperLeftCorner();
+	for(i=0; i < largura-2; i++){
+		horizontalLine();
+	}
+	upperRightCorner();
+
+	printf("\n");
+
+	for(i=2; i < altura; i++){
+		if(i == 3){
+			gotoxy(1, i);
+			subBlockRight();
+			for(j=0; j < largura-2; j++){
+				horizontalLine();
+			}
+			subBlockLeft();
+			continue;
+		}
+		gotoxy(1, i);
+		verticalLine();
+
+		gotoxy(largura, i);
+		verticalLine();
+		printf("\n");
+	}
+
+	lowerLeftCorner();
+	for(i=0; i < largura-2; i++){
+		horizontalLine();
+	}
+	lowerRightCorner();
+
+	gotoxy(largura/2 - cont/2+1, 2);
+	printf("%s", titulo);
+
+	showCursor();
+}

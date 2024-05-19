@@ -33,6 +33,16 @@
 #define removerChar() printf("\033[1P");
 #define hideCursor() printf("\033[?25l");
 #define showCursor() printf("\033[?25h");
+
+#define horizontalLine() printf("\xE2\x94\x80");
+#define verticalLine() printf("\xE2\x94\x82");
+#define upperLeftCorner() printf("\xE2\x94\x8C");
+#define upperRightCorner() printf("\xE2\x94\x90");
+#define lowerLeftCorner() printf("\xE2\x94\x94");
+#define lowerRightCorner() printf("\xE2\x94\x98");
+#define subBlockRight() printf("\xE2\x94\x9C");
+#define subBlockLeft() printf("\xE2\x94\xA4");
+
 typedef struct utf_byte{
 	unsigned char byte;
 	struct utf_byte *prox;
@@ -65,6 +75,8 @@ typedef struct lista{
     LINHA *fim;
     int tamanho;
 }LISTA;
+
+void desenharMoldura(int largura, int altura);
 
 void inicializarCadeia(CADEIA *c);
 void inicializarLista(LISTA *l);

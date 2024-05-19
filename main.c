@@ -1,54 +1,70 @@
 #include <stdio.h>
 #include <conio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <windows.h>
 #include "funcoes.h"
 
 int main(){
-	int opc;
+	char arquivo[100] = "./arquivos/";
+	int maxLinhas, maxColunas;
+	getTerminalColumnsRows(&maxColunas, &maxLinhas);
 
 	LISTA *lista = (LISTA*) malloc(sizeof(LISTA));
-
 	inicializarLista(lista);
 
-	/* NAO APAGAR ESSE COMENTARIO
+	int opc;
+
+	desenharMoldura(maxColunas, maxLinhas);
+	gotoxy(2, 4);
 	do{
 		printf("1 - Editar novo arquivo\n");
+		gotoxy(2, getCursorRow());
+
 		printf("2 - Editar arquivo existente\n");
+		gotoxy(2, getCursorRow());
+
 		printf("3 - Sair\n");
+		gotoxy(2, getCursorRow());
+
 		printf("Digite a sua opção: ");
 		scanf("%d", &opc);
 
 		fflush(stdin);
 
 		switch(opc){
-			char arquivo[100];
+			char nome[30];
 			case 1:
 				// Função para novo arquivo
+				gotoxy(2, getCursorRow());
+				printf("Digite o nome do novo arquivo (texto.txt): ");
+				gets(nome);
+				strcat(arquivo, nome);
+
 				inserirLinhaFim(lista);
 				break;
 			case 2:
 				// Função para editar arquivo existente
-				printf("Digite o arquivo com o caminho: ");
-				gets(arquivo);
+				gotoxy(2, getCursorRow());
+				printf("Digite o nome do arquivo (texto.txt): ");
+				gets(nome);
+				strcat(arquivo, nome);
 				lerArquivoLista(arquivo, lista);
 				break;
 			case 3:
 				// Sair
+				clear();
 				return 0;
 			default:
 				printf("Opção inválida\n");
 				break;
 		}
-	}while(opc > 3 || opc < 1);*/
+	}while(opc > 3 || opc < 1);
 
-	lerArquivoLista("./arquivos/novo.txt", lista);
 	clear();
 
 	int entrada;
-	int maxLinhas, maxColunas;
 	int linhaAtual=1, colunaAtual=1;
-	getTerminalColumnsRows(&maxColunas, &maxLinhas);
 
 	LINHA *inicioBuffer = lista->inicio;
 	LINHA *atualBuffer = inicioBuffer;
@@ -299,7 +315,7 @@ int main(){
 			break;
 
 			case CTRL_S:
-				gravarListaArquivo("./arquivos/novo.txt", lista);
+				gravarListaArquivo(arquivo, lista);
 				break;
 
 			default:
