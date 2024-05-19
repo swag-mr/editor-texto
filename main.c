@@ -252,13 +252,25 @@ int main(){
 						
 						deleteLine();
 						removerLinhaAtual(lista, atualBuffer->prox);
-						fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow()-1, maxLinhas);
 						linhaAtual--;
-
 						gotoxy(colunaAtual, getCursorRow()-1);
+						fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas); 
 
+						saveCursor()
+						gotoxy(1, getCursorRow());
+						clearTillEndLine();
+						loadCursor();
+
+						int bufferRow=getCursorRow();
+						LINHA *aux = atualBuffer;
+						while(aux != fimBuffer){
+							aux = aux->prox;
+							bufferRow++;
+						}
 						escreverCadeiasTela(atualBuffer, getCursorRow(), getCursorRow(), 1, maxColunas);
-						escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
+						if(bufferRow == maxLinhas){
+							escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
+						}
 					}
 				}
 				break;
