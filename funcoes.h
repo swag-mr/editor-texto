@@ -2,6 +2,7 @@
 #define FUNCOES_H
 
 #define CTRL_S 19
+#define CTRL_Q 17
 #define END 79
 #define HOME 71
 #define PAGE_UP 73
