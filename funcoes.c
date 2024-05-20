@@ -63,6 +63,17 @@ void inserirUtfByte(UTFCHAR *u, unsigned char c){
 	aux->prox = utfByte;
 }
 
+void removerUtfByteInicio(UTFCHAR *u){
+	if(u->inicio == NULL){
+		return;
+	}
+
+	UTFBYTE *auxByte = u->inicio;
+	u->inicio = auxByte->prox;
+
+	free(auxByte);
+}
+
 void inserirLinhaInicio(LISTA *lista){
 	LINHA *linha = criarLinha();
 	lista->tamanho++;
@@ -273,6 +284,11 @@ void removerCaractereCadeiaInicio(CADEIA *cadeia){
 	cadeia->inicio = aux->prox;
 	cadeia->tamanho--;
 
+	while(aux->utfChar->inicio != NULL){
+		removerUtfByteInicio(aux->utfChar);
+	}
+
+	free(aux->utfChar);
 	free(aux);
 	if(cadeiaEstaVazia(cadeia)){
 		cadeia->fim = NULL;
@@ -291,6 +307,12 @@ void removerCaractereCadeiaFim(CADEIA *cadeia){
 	CARACTERE *aux = cadeia->fim;
 	cadeia->fim = aux->ant;
 	cadeia->tamanho--;
+
+	while(aux->utfChar->inicio != NULL){
+		removerUtfByteInicio(aux->utfChar);
+	}
+
+	free(aux->utfChar);
 	free(aux);
 
 	if(cadeiaEstaVazia(cadeia)){
@@ -335,6 +357,11 @@ void removerCaractereCadeiaPosicao(CADEIA *cadeia, int pos){
 	ant->prox = aux->prox;
 	aux->prox->ant = ant;
 
+	while(aux->utfChar->inicio != NULL){
+		removerUtfByteInicio(aux->utfChar);
+	}
+
+	free(aux->utfChar);
 	free(aux);
 
 	if(cadeiaEstaVazia(cadeia)){
@@ -734,6 +761,8 @@ void interfaceEditor(int largura, int altura, char *nomeArquivo){
 	for(i=0; i < largura; i++){
 		horizontalLine();
 	}
+	gotoxy(1,altura);
+	printf("CTRL-S Salvar\tCTRL-Q Sair");
 
 	showCursor();
 	loadCursor();

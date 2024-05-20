@@ -103,6 +103,8 @@ LINHA *criarLinha();
 
 void inserirUtfByte(UTFCHAR *u, unsigned char c);
 
+void removerUtfByteInicio(UTFCHAR *u);
+
 void inserirLinhaFim(LISTA *lista);
 void inserirLinhaInicio(LISTA *lista);
 void inserirLinhaPosicao(LISTA *lista, LINHA *linhaAtual);
