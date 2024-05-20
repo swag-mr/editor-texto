@@ -659,7 +659,10 @@ int menu(char arquivo[], int maxLinhas, int maxColunas, LISTA *lista){
 					while((dir = readdir(d)) != NULL){
 						gotoxy(2, getCursorRow());
 						if(strcmp(dir->d_name, ".") != 0 && strcmp(dir->d_name, "..") != 0){
-							printf("\t%s\n", dir->d_name); // Mostrar apenas arquivos txt
+							char *ext = strrchr(dir->d_name, '.');
+                			if (ext && strcmp(ext, ".txt") == 0) {
+                    			printf("\t%s\n", dir->d_name); // Mostrar apenas arquivos .txt
+                			}
 						}
 					}
 					closedir(d);
