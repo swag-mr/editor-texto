@@ -715,3 +715,26 @@ int menu(char arquivo[], int maxLinhas, int maxColunas, LISTA *lista){
 
 	return 1;
 }
+
+void interfaceEditor(int largura, int altura, char *nomeArquivo){
+	int i;
+
+	saveCursor();
+	hideCursor();
+
+	gotoxy(1, 1);
+	printf("%s", nomeArquivo);
+
+	gotoxy(1, 2);
+	for(i=0; i < largura; i++){
+		horizontalLine();
+	}
+
+	gotoxy(1, altura-1);
+	for(i=0; i < largura; i++){
+		horizontalLine();
+	}
+
+	showCursor();
+	loadCursor();
+}

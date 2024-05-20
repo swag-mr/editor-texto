@@ -43,6 +43,7 @@
 #define removerChar() printf("\033[1P");
 #define hideCursor() printf("\033[?25l");
 #define showCursor() printf("\033[?25h");
+#define scrollMargins(s,e) printf("\033[%d;%dr", s, e)
 
 #define horizontalLine() printf("\xE2\x94\x80");
 #define verticalLine() printf("\xE2\x94\x82");
@@ -131,6 +132,7 @@ int numberOfBytesInChar(unsigned char val);
 
 int veririficarNomeArquivo(char nome[]);
 int menu(char arquivo[], int maxLinhas, int maxColunas, LISTA *lista);
+void interfaceEditor(int largura, int altura, char *nomeArquivo);
 
 #include "funcoes.c"
 #endif

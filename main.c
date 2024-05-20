@@ -18,14 +18,22 @@ int main(){
 
 	int opc = menu(arquivo, maxLinhas, maxColunas, lista);
 
+	int inicioEdicao = 3;
+	int fimEdicao = maxLinhas-2;
+
+	scrollMargins(inicioEdicao, fimEdicao);
+	interfaceEditor(maxColunas, maxLinhas, arquivo);
+
 	int entrada;
 	int linhaAtual=1, colunaAtual=1;
 
 	LINHA *inicioBuffer = lista->inicio;
 	LINHA *atualBuffer = inicioBuffer;
-	
+
 	// Imprimir a tela ate os limites do terminal e armazenar a última linha percorrida
-	LINHA *fimBuffer = escreverCadeiasTela(lista->inicio, 1, maxLinhas, 1, maxColunas);
+	LINHA *fimBuffer = escreverCadeiasTela(lista->inicio, inicioEdicao, fimEdicao, 1, maxColunas);
+
+	gotoxy(1, inicioEdicao);
 	while(opc != 0){
 		do{
 			int posY = getCursorRow();
@@ -55,7 +63,7 @@ int main(){
 								atualBuffer = atualBuffer->ant;
 							}
 						}
-						break;
+					break;
 
 					case ARROW_DOWN:
 						if(atualBuffer != fimBuffer){
@@ -70,7 +78,7 @@ int main(){
 								atualBuffer = atualBuffer->prox;
 							}
 						}
-						break;
+					break;
 
 					case ARROW_LEFT:
 						if(colunaAtual == 1){
@@ -84,7 +92,7 @@ int main(){
 							cursorLeft();
 							colunaAtual--;
 						}
-						break;
+					break;
 
 					case ARROW_RIGHT:
 						if(colunaAtual == atualBuffer->cadeia->tamanho+1){
@@ -98,7 +106,7 @@ int main(){
 							cursorRight();
 							colunaAtual++;
 						}
-						break;
+					break;
 					case PAGE_UP:
 						if(inicioBuffer->ant != NULL){
 							if(colunaAtual <= atualBuffer->ant->cadeia->tamanho+1){
@@ -112,14 +120,14 @@ int main(){
 							atualBuffer = atualBuffer->ant;
 							inicioBuffer = inicioBuffer->ant;
 							fimBuffer = fimBuffer->ant;
-							escreverCadeiasTela(inicioBuffer, 1, 1, 1, maxColunas);
+							escreverCadeiasTela(inicioBuffer, inicioEdicao, inicioEdicao, 1, maxColunas);
 						}
-						break;
+					break;
 
 					case PAGE_DOWN:
 						if(fimBuffer->prox != NULL){
 							if(colunaAtual <= atualBuffer->prox->cadeia->tamanho+1){
-							scrollDown();
+								scrollDown();
 							}else{
 								colunaAtual = atualBuffer->prox->cadeia->tamanho+1;
 								scrollDown();
@@ -129,19 +137,19 @@ int main(){
 							atualBuffer = atualBuffer->prox;
 							fimBuffer = fimBuffer->prox;
 							inicioBuffer = inicioBuffer->prox;
-							escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
+							escreverCadeiasTela(fimBuffer, fimEdicao, fimEdicao, 1, maxColunas);
 						}
-						break;
+					break;
 					case END:
 						colunaAtual = atualBuffer->cadeia->tamanho + 1;
-						gotoxy(atualBuffer->cadeia->tamanho+1, linhaAtual);
-						break;
+						gotoxy(atualBuffer->cadeia->tamanho+1, getCursorRow());
+					break;
 					case HOME:
 						colunaAtual = 1;
-						gotoxy(1, linhaAtual);
-						break;
+						gotoxy(1, getCursorRow());
+					break;
 					default:
-						break;
+					break;
 				}
 				continue;
 			}
@@ -171,7 +179,7 @@ int main(){
 										tamanhoNovo = atualBuffer->cadeia->tamanho;
 										colunaAtual = 1;
 									}
-									
+
 									atualBuffer->cadeia->tamanho = tamanhoNovo;
 								}
 								if(atualBuffer->prox == inicioBuffer){
@@ -192,25 +200,25 @@ int main(){
 									removerLinhaAtual(lista, atualBuffer->prox);
 									linhaAtual--;
 									gotoxy(colunaAtual, getCursorRow()-1);
-									fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas); 
+									fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), fimEdicao); 
 
 									saveCursor()
 									gotoxy(1, getCursorRow());
 									clearTillEndLine();
 									loadCursor();
 
-									int bufferRow=getCursorRow();
+								int bufferRow=getCursorRow();
 									LINHA *aux = atualBuffer;
 									while(aux != fimBuffer){
 										aux = aux->prox;
 										bufferRow++;
 									}
 									escreverCadeiasTela(atualBuffer, getCursorRow(), getCursorRow(), 1, maxColunas);
-									if(bufferRow == maxLinhas){
-										escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
+									if(bufferRow == fimEdicao){
+										escreverCadeiasTela(fimBuffer, fimEdicao, fimEdicao, 1, maxColunas);
 									}
 								}
-								
+
 							}
 						}
 					}else{
@@ -220,12 +228,12 @@ int main(){
 							}
 							atualBuffer = atualBuffer->ant;
 							colunaAtual = atualBuffer->cadeia->tamanho + 1;
-							
+
 							deleteLine();
 							removerLinhaAtual(lista, atualBuffer->prox);
 							linhaAtual--;
 							gotoxy(colunaAtual, getCursorRow()-1);
-							fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas); 
+							fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), fimEdicao); 
 
 							saveCursor()
 							gotoxy(1, getCursorRow());
@@ -239,22 +247,22 @@ int main(){
 								bufferRow++;
 							}
 							escreverCadeiasTela(atualBuffer, getCursorRow(), getCursorRow(), 1, maxColunas);
-							if(bufferRow == maxLinhas){
-								escreverCadeiasTela(fimBuffer, maxLinhas, maxLinhas, 1, maxColunas);
+							if(bufferRow == fimEdicao){
+								escreverCadeiasTela(fimBuffer, fimEdicao, fimEdicao, 1, maxColunas);
 							}
 						}
 					}
-					break;
+				break;
 
 				case ENTER:
 					clearTillEndLine();
 
-					if(atualBuffer == fimBuffer && getCursorRow() == maxLinhas){
+					if(atualBuffer == fimBuffer && getCursorRow() == fimEdicao){
 						scrollDown();
 						inicioBuffer=inicioBuffer->prox;
 					}
 
-					cursorNextLine();
+				cursorNextLine();
 					lineFeed();
 					desanexarParaNovaLinha(lista, atualBuffer, colunaAtual);
 					linhaAtual++;
@@ -263,15 +271,15 @@ int main(){
 					atualBuffer = atualBuffer->prox;
 
 					escreverCadeiasTela(atualBuffer, getCursorRow(),  getCursorRow(), colunaAtual, maxColunas);
-					fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), maxLinhas);
-					break;
+					fimBuffer = determinarFimBuffer(atualBuffer, getCursorRow(), fimEdicao);
+				break;
 
 				case CTRL_S:
 					gravarListaArquivo(arquivo, lista);
-					break;
+				break;
 
 				case CTRL_Q:
-					break;
+				break;
 
 				default:
 					inserirChar();
@@ -289,15 +297,15 @@ int main(){
 					inserirUtfByte(novoCaractere, entrada);
 					inserirCaractereCadeiaPosicao(atualBuffer->cadeia, novoCaractere, colunaAtual-1);
 					colunaAtual++;
-					break;
+				break;
 			}
 		}while(entrada != CTRL_Q);
-		clear();
+	clear();
 		strcpy(arquivo, "./arquivos/");
 		//limparLista(lista); IMPLEMENTAR A FUNCAO DE LIMPARLISTA
 		opc = menu(arquivo, maxLinhas, maxColunas, lista);
 	}
 	padrao();
 	clear();
-    return 0;
+	return 0;
 }
