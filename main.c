@@ -300,7 +300,8 @@ int main(){
 				break;
 			}
 		}while(entrada != CTRL_Q);
-	clear();
+		clear();
+		resetScrollMargins();
 		strcpy(arquivo, "./arquivos/");
 		//limparLista(lista); IMPLEMENTAR A FUNCAO DE LIMPARLISTA
 		opc = menu(arquivo, maxLinhas, maxColunas, lista);

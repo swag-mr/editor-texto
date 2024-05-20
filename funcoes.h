@@ -44,6 +44,7 @@
 #define hideCursor() printf("\033[?25l");
 #define showCursor() printf("\033[?25h");
 #define scrollMargins(s,e) printf("\033[%d;%dr", s, e)
+#define resetScrollMargins() printf("\033[r")
 
 #define horizontalLine() printf("\xE2\x94\x80");
 #define verticalLine() printf("\xE2\x94\x82");
