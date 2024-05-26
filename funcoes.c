@@ -767,3 +767,32 @@ void interfaceEditor(int largura, int altura, char *nomeArquivo){
 	showCursor();
 	loadCursor();
 }
+
+void limparLista(LISTA *l){
+	LINHA *linhaAux = l->inicio;
+	LINHA *linhaProx = l->inicio->prox;
+
+	while(linhaAux != NULL){
+		CARACTERE *caracAux = linhaAux->cadeia->inicio;
+		CARACTERE *caracProx = linhaAux->cadeia->inicio->prox;
+
+		while(caracAux != NULL){
+			UTFBYTE *uftAux = caracAux->utfChar->inicio;
+			UTFBYTE *uftProx = caracAux->utfChar->inicio->prox;
+
+			while(uftAux != NULL){
+				free(uftAux);
+				uftAux = uftProx;
+				uftProx = uftProx->prox;
+			}
+
+			free(caracAux);
+			caracAux = caracProx;
+			caracProx = caracProx->prox;
+		}
+
+		free(linhaAux);
+		linhaAux = linhaProx;
+		linhaProx = linhaProx->prox;
+	}
+}

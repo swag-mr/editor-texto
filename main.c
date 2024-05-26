@@ -303,7 +303,7 @@ int main(){
 		clear();
 		resetScrollMargins();
 		strcpy(arquivo, "./arquivos/");
-		//limparLista(lista); IMPLEMENTAR A FUNCAO DE LIMPARLISTA
+		limparLista(lista);
 		opc = menu(arquivo, maxLinhas, maxColunas, lista);
 	}
 	padrao();
