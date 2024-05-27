@@ -21,20 +21,29 @@ int main(){
 	int inicioEdicao = 3;
 	int fimEdicao = maxLinhas-2;
 
-	scrollMargins(inicioEdicao, fimEdicao);
-	interfaceEditor(maxColunas, maxLinhas, arquivo);
+	// scrollMargins(inicioEdicao, fimEdicao);
+	// interfaceEditor(maxColunas, maxLinhas, arquivo);
 
-	int entrada;
-	int linhaAtual=1, colunaAtual=1;
+	// sint entrada;
+	// sint linhaAtual=1, colunaAtual=1;
 
-	LINHA *inicioBuffer = lista->inicio;
-	LINHA *atualBuffer = inicioBuffer;
+	// sLINHA *inicioBuffer = lista->inicio;
+	// sLINHA *atualBuffer = inicioBuffer;
 
 	// Imprimir a tela ate os limites do terminal e armazenar a última linha percorrida
-	LINHA *fimBuffer = escreverCadeiasTela(lista->inicio, inicioEdicao, fimEdicao, 1, maxColunas);
-
-	gotoxy(1, inicioEdicao);
+	// sLINHA *fimBuffer = escreverCadeiasTela(lista->inicio, inicioEdicao, fimEdicao, 1, maxColunas);
 	while(opc != 0){
+		scrollMargins(inicioEdicao, fimEdicao);
+		interfaceEditor(maxColunas, maxLinhas, arquivo);
+
+		int entrada;
+		int linhaAtual=1, colunaAtual=1;
+
+		LINHA *inicioBuffer = lista->inicio;
+		LINHA *atualBuffer = inicioBuffer;
+		LINHA *fimBuffer = escreverCadeiasTela(lista->inicio, inicioEdicao, fimEdicao, 1, maxColunas);
+
+		gotoxy(1, inicioEdicao);
 		do{
 			int posY = getCursorRow();
 			saveCursor();
