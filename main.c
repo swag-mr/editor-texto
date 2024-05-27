@@ -304,6 +304,7 @@ int main(){
 		resetScrollMargins();
 		strcpy(arquivo, "./arquivos/");
 		limparLista(lista);
+		inicializarLista(lista);
 		opc = menu(arquivo, maxLinhas, maxColunas, lista);
 	}
 	padrao();

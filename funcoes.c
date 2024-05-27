@@ -768,31 +768,23 @@ void interfaceEditor(int largura, int altura, char *nomeArquivo){
 	loadCursor();
 }
 
-void limparLista(LISTA *l){
-	LINHA *linhaAux = l->inicio;
-	LINHA *linhaProx = l->inicio->prox;
-
-	while(linhaAux != NULL){
-		CARACTERE *caracAux = linhaAux->cadeia->inicio;
-		CARACTERE *caracProx = linhaAux->cadeia->inicio->prox;
-
-		while(caracAux != NULL){
-			UTFBYTE *uftAux = caracAux->utfChar->inicio;
-			UTFBYTE *uftProx = caracAux->utfChar->inicio->prox;
-
-			while(uftAux != NULL){
-				free(uftAux);
-				uftAux = uftProx;
-				uftProx = uftProx->prox;
-			}
-
-			free(caracAux);
-			caracAux = caracProx;
-			caracProx = caracProx->prox;
-		}
-
-		free(linhaAux);
-		linhaAux = linhaProx;
-		linhaProx = linhaProx->prox;
-	}
+void limparLista(LISTA *l) {
+    LINHA *linhaAux = l->inicio;
+    while (linhaAux != NULL) {
+        LINHA *linhaProx = linhaAux->prox;
+        CARACTERE *caracAux = linhaAux->cadeia->inicio;
+        while (caracAux != NULL) {
+            CARACTERE *caracProx = caracAux->prox;
+            UTFBYTE *uftAux = caracAux->utfChar->inicio;
+            while (uftAux != NULL) {
+                UTFBYTE *uftProx = uftAux->prox;
+                free(uftAux);
+                uftAux = uftProx;
+            }
+            free(caracAux);
+            caracAux = caracProx;
+        }
+        free(linhaAux);  
+        linhaAux = linhaProx;  
+    }
 }
